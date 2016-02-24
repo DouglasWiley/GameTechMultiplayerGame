@@ -20,6 +20,8 @@ http://www.ogre3d.org/wiki/
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
 {
+    this->physicsEngine = new Physics();
+    this->physicsEngine->initObjects();
 }
 //---------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
@@ -29,7 +31,49 @@ TutorialApplication::~TutorialApplication(void)
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
-    // Create your scene here :)
+    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+    Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
+    Ogre::MeshManager::getSingleton().createPlane(
+    "ground",
+    Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+    plane, 
+    1500, 1500, 20, 20, 
+    true, 
+    1, 5, 5, 
+    Ogre::Vector3::UNIT_Z);
+
+    Ogre::Entity* groundEntity = mSceneMgr->createEntity("ground");
+    mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(groundEntity);
+    groundEntity->setMaterialName("Examples/Rockwall");
+
+
+    btTransform groundTransform;
+    groundTransform.setIdentity();
+    groundTransform.setOrigin(btVector3(0, -50, 0));
+ 
+    btScalar groundMass(0.); //the mass is 0, because the ground is immovable (static)
+    btVector3 localGroundInertia(0, 0, 0);
+    btCollisionShape *groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
+    btDefaultMotionState *groundMotionState = new btDefaultMotionState(groundTransform);
+ 
+    groundShape->calculateLocalInertia(groundMass, localGroundInertia);
+ 
+    btRigidBody::btRigidBodyConstructionInfo groundRBInfo(groundMass, groundMotionState, groundShape, localGroundInertia);
+    btRigidBody *groundBody = new btRigidBody(groundRBInfo);
+ 
+    //add the body to the dynamics world
+    this->physicsEngine->getDynamicsWorld()->addRigidBody(groundBody);
+
+}
+
+void TutorialApplication::createCamera()
+{
+    mCamera = mSceneMgr->createCamera("PlayerCam");
+    mCamera->setPosition(Ogre::Vector3(-25, 90, 30));
+    mCamera->lookAt(Ogre::Vector3(0, 30, 0));
+    mCamera->setNearClipDistance(5);
+    mCamera->setFarClipDistance(1000);
+    mCameraMan = new OgreBites::SdkCameraMan(mCamera);
 }
 //---------------------------------------------------------------------------
 

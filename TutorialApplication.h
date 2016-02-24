@@ -19,6 +19,8 @@ http://www.ogre3d.org/wiki/
 #define __TutorialApplication_h_
 
 #include "BaseApplication.h"
+#include "btBulletDynamicsCommon.h"
+#include "Physics.h"
 
 //---------------------------------------------------------------------------
 
@@ -28,8 +30,12 @@ public:
     TutorialApplication(void);
     virtual ~TutorialApplication(void);
 
+private:
+	Physics* physicsEngine;
+
 protected:
     virtual void createScene(void);
+    virtual void createCamera();
 };
 
 //---------------------------------------------------------------------------

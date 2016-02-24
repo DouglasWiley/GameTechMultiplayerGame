@@ -98,7 +98,8 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_assignment2_OBJECTS = assignment2-BaseApplication.$(OBJEXT) \
-	assignment2-TutorialApplication.$(OBJEXT)
+	assignment2-TutorialApplication.$(OBJEXT) \
+	assignment2-Physics.$(OBJEXT)
 assignment2_OBJECTS = $(am_assignment2_OBJECTS)
 am__DEPENDENCIES_1 =
 assignment2_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
@@ -321,9 +322,9 @@ target_alias =
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
-noinst_HEADERS = BaseApplication.h TutorialApplication.h 
+noinst_HEADERS = BaseApplication.h TutorialApplication.h Physics.h
 assignment2_CPPFLAGS = -I$(top_srcdir)
-assignment2_SOURCES = BaseApplication.cpp TutorialApplication.cpp 
+assignment2_SOURCES = BaseApplication.cpp TutorialApplication.cpp Physics.cpp
 #Ball.cpp ControlListener.cpp GameObject.cpp Overlay.cpp Player.cpp PlayerCamera.cpp PlayingField.cpp Simulator.cpp Wall.cpp
 assignment2_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS)
 assignment2_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS)
@@ -445,6 +446,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 include ./$(DEPDIR)/assignment2-BaseApplication.Po
+include ./$(DEPDIR)/assignment2-Physics.Po
 include ./$(DEPDIR)/assignment2-TutorialApplication.Po
 
 .cpp.o:
@@ -495,6 +497,20 @@ assignment2-TutorialApplication.obj: TutorialApplication.cpp
 #	$(AM_V_CXX)source='TutorialApplication.cpp' object='assignment2-TutorialApplication.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-TutorialApplication.obj `if test -f 'TutorialApplication.cpp'; then $(CYGPATH_W) 'TutorialApplication.cpp'; else $(CYGPATH_W) '$(srcdir)/TutorialApplication.cpp'; fi`
+
+assignment2-Physics.o: Physics.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Physics.o -MD -MP -MF $(DEPDIR)/assignment2-Physics.Tpo -c -o assignment2-Physics.o `test -f 'Physics.cpp' || echo '$(srcdir)/'`Physics.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Physics.Tpo $(DEPDIR)/assignment2-Physics.Po
+#	$(AM_V_CXX)source='Physics.cpp' object='assignment2-Physics.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Physics.o `test -f 'Physics.cpp' || echo '$(srcdir)/'`Physics.cpp
+
+assignment2-Physics.obj: Physics.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Physics.obj -MD -MP -MF $(DEPDIR)/assignment2-Physics.Tpo -c -o assignment2-Physics.obj `if test -f 'Physics.cpp'; then $(CYGPATH_W) 'Physics.cpp'; else $(CYGPATH_W) '$(srcdir)/Physics.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Physics.Tpo $(DEPDIR)/assignment2-Physics.Po
+#	$(AM_V_CXX)source='Physics.cpp' object='assignment2-Physics.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Physics.obj `if test -f 'Physics.cpp'; then $(CYGPATH_W) 'Physics.cpp'; else $(CYGPATH_W) '$(srcdir)/Physics.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
