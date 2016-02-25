@@ -17,6 +17,32 @@ http://www.ogre3d.org/wiki/
 
 #include "TutorialApplication.h"
 
+class MyMotionState : public btMotionState {
+public:
+    MyMotionState(const btTransform &initialpos, Ogre::SceneNode *node) {
+        mVisibleobj = node;
+        mPos1 = initialpos;
+    }
+    virtual ~MyMotionState() {    }
+    void setNode(Ogre::SceneNode *node) {
+        mVisibleobj = node;
+    }
+    virtual void getWorldTransform(btTransform &worldTrans) const {
+        worldTrans = mPos1;
+    }
+    virtual void setWorldTransform(const btTransform &worldTrans) {
+        if(NULL == mVisibleobj) return; // silently return before we set a node
+        btQuaternion rot = worldTrans.getRotation();
+        mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
+        btVector3 pos = worldTrans.getOrigin();
+        // TODO **** XXX need to fix this up such that it renders properly since this doesnt know the scale of the node
+        // also the getCube function returns a cube that isnt centered on Z
+        mVisibleobj->setPosition(pos.x(), pos.y()+5, pos.z()-5);
+    }
+protected:
+    Ogre::SceneNode *mVisibleobj;
+    btTransform mPos1;
+};
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
 {
@@ -49,11 +75,11 @@ void TutorialApplication::createScene(void)
 
     btTransform groundTransform;
     groundTransform.setIdentity();
-    groundTransform.setOrigin(btVector3(0, -50, 0));
+    groundTransform.setOrigin(btVector3(0, -2, 0));
  
     btScalar groundMass(0.); //the mass is 0, because the ground is immovable (static)
     btVector3 localGroundInertia(0, 0, 0);
-    btCollisionShape *groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
+    btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(1500.),btScalar(1.),btScalar(1500.)));
     btDefaultMotionState *groundMotionState = new btDefaultMotionState(groundTransform);
  
     groundShape->calculateLocalInertia(groundMass, localGroundInertia);
@@ -62,7 +88,34 @@ void TutorialApplication::createScene(void)
     btRigidBody *groundBody = new btRigidBody(groundRBInfo);
  
     //add the body to the dynamics world
-    this->physicsEngine->getDynamicsWorld()->addRigidBody(groundBody);
+    btDiscreteDynamicsWorld* dynamicsWorld = this->physicsEngine->getDynamicsWorld();
+    dynamicsWorld->addRigidBody(groundBody);
+    Ogre::SceneNode* ballNode;
+    Ogre::Entity* ballEnt;
+    Ogre::Vector3 direction;
+    Ogre::Real speed;
+
+    ballNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0, 200, 0));
+    ballEnt = mSceneMgr->createEntity("sphere.mesh");
+    ballNode->attachObject(ballEnt);
+    btCollisionShape *newRigidShape = new btSphereShape(100);
+    this->physicsEngine->getCollisionShapes().push_back(newRigidShape);
+ 
+    //set the initial position and transform. For this demo, we set the tranform to be none
+    btTransform startTransform;
+    startTransform.setIdentity();
+
+    btScalar mass = 0.1f;
+    btVector3 localInertia(0,0,0);
+ 
+    startTransform.setOrigin(btVector3(0,250,0));
+    newRigidShape->calculateLocalInertia(mass, localInertia);
+    MyMotionState* motionState = new MyMotionState(startTransform, ballNode);
+    btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, newRigidShape, localInertia);
+    btRigidBody *body = new btRigidBody(rbInfo);
+    dynamicsWorld->addRigidBody(body);
+    dynamicsWorld->setGravity(btVector3(0,-10,0));
+ 
 
 }
 
