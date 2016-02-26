@@ -36,6 +36,7 @@ private:
 protected:
     virtual void createScene(void);
     virtual void createCamera();
+	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 };
 
 //---------------------------------------------------------------------------

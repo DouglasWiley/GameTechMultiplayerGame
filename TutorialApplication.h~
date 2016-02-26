@@ -24,6 +24,19 @@ http://www.ogre3d.org/wiki/
 
 //---------------------------------------------------------------------------
 
+class TutorialApplication : public BaseApplication
+{
+public:
+    TutorialApplication(void);
+    virtual ~TutorialApplication(void);
+
+private:
+	Physics* physicsEngine;
+
+protected:
+    virtual void createScene(void);
+    virtual void createCamera();
+};
 
 //---------------------------------------------------------------------------
 
