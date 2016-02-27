@@ -1027,7 +1027,9 @@ assignment2-TutorialApplication.o: TutorialApplication.cpp \
  /usr/include/bullet/BulletDynamics/Vehicle/btVehicleRaycaster.h \
  /usr/include/bullet/BulletDynamics/Vehicle/btWheelInfo.h \
  /usr/include/bullet/BulletDynamics/Dynamics/btActionInterface.h \
- /usr/include/bullet/BulletDynamics/Dynamics/btRigidBody.h Physics.h
+ /usr/include/bullet/BulletDynamics/Dynamics/btRigidBody.h Physics.h \
+ Room.h /lusr/opt/ogre-1.9/include/OGRE/Ogre.h Ball.h MyMotionState.h \
+ Paddle.h
 
 /usr/include/stdc-predef.h:
 
@@ -3286,3 +3288,13 @@ BaseApplication.h:
 /usr/include/bullet/BulletDynamics/Dynamics/btRigidBody.h:
 
 Physics.h:
+
+Room.h:
+
+/lusr/opt/ogre-1.9/include/OGRE/Ogre.h:
+
+Ball.h:
+
+MyMotionState.h:
+
+Paddle.h:

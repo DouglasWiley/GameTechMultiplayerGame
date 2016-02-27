@@ -21,6 +21,10 @@ http://www.ogre3d.org/wiki/
 #include "BaseApplication.h"
 #include "btBulletDynamicsCommon.h"
 #include "Physics.h"
+#include "Room.h"
+#include "Ball.h"
+#include "Paddle.h"
+#include "MyMotionState.h"
 
 //---------------------------------------------------------------------------
 
@@ -29,14 +33,19 @@ class TutorialApplication : public BaseApplication
 public:
     TutorialApplication(void);
     virtual ~TutorialApplication(void);
+    void setUpLighting();
 
 private:
 	Physics* physicsEngine;
+  Paddle* paddle;
+  bool processUnbufferedInput(const Ogre::FrameEvent& evt);
 
 protected:
     virtual void createScene(void);
     virtual void createCamera();
-	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+	  virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    virtual bool keyPressed(const OIS::KeyEvent& arg);
+    virtual bool keyReleased(const OIS::KeyEvent& arg);
 };
 
 //---------------------------------------------------------------------------

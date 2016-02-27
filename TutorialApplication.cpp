@@ -17,32 +17,6 @@ http://www.ogre3d.org/wiki/
 
 #include "TutorialApplication.h"
 
-class MyMotionState : public btMotionState {
-public:
-    MyMotionState(const btTransform &initialpos, Ogre::SceneNode *node) {
-        mVisibleobj = node;
-        mPos1 = initialpos;
-    }
-    virtual ~MyMotionState() {    }
-    void setNode(Ogre::SceneNode *node) {
-        mVisibleobj = node;
-    }
-    virtual void getWorldTransform(btTransform &worldTrans) const {
-        worldTrans = mPos1;
-    }
-    virtual void setWorldTransform(const btTransform &worldTrans) {
-        if(NULL == mVisibleobj) return; // silently return before we set a node
-        btQuaternion rot = worldTrans.getRotation();
-        mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
-        btVector3 pos = worldTrans.getOrigin();
-        // TODO **** XXX need to fix this up such that it renders properly since this doesnt know the scale of the node
-        // also the getCube function returns a cube that isnt centered on Z
-        mVisibleobj->setPosition(pos.x(), pos.y(), pos.z());
-    }
-protected:
-    Ogre::SceneNode *mVisibleobj;
-    btTransform mPos1;
-};
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
 {
@@ -69,7 +43,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     mTrayMgr->frameRenderingQueued(evt);
 
-    physicsEngine->getDynamicsWorld()->stepSimulation(evt.timeSinceLastFrame,50);
+    physicsEngine->getDynamicsWorld()->stepSimulation(evt.timeSinceLastFrame, 60);
 
     if (!mTrayMgr->isDialogVisible())
     {
@@ -91,80 +65,146 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
-    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
-    Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
-    Ogre::MeshManager::getSingleton().createPlane(
-    "ground",
-    Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-    plane, 
-    1500, 1500, 20, 20, 
-    true, 
-    1, 5, 5, 
-    Ogre::Vector3::UNIT_Z);
-
-    Ogre::Entity* groundEntity = mSceneMgr->createEntity("ground");
-    mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(groundEntity);
-    groundEntity->setMaterialName("Examples/Rockwall");
-
-
-    btTransform groundTransform;
-    groundTransform.setIdentity();
-    groundTransform.setOrigin(btVector3(0, -1500, 0));
- 
-    btScalar groundMass(0.); //the mass is 0, because the ground is immovable (static)
-    btVector3 localGroundInertia(0, 0, 0);
-    btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(1500.),btScalar(1.),btScalar(1500.)));
-    btDefaultMotionState *groundMotionState = new btDefaultMotionState(groundTransform);
- 
-    groundShape->calculateLocalInertia(groundMass, localGroundInertia);
- 
-    btRigidBody::btRigidBodyConstructionInfo groundRBInfo(groundMass, groundMotionState, groundShape, localGroundInertia);
-    btRigidBody *groundBody = new btRigidBody(groundRBInfo);
-
-
- 
-    //add the body to the dynamics world
-    btDiscreteDynamicsWorld* dynamicsWorld = this->physicsEngine->getDynamicsWorld();
-    dynamicsWorld->addRigidBody(groundBody);
-    Ogre::SceneNode* ballNode;
-    Ogre::Entity* ballEnt;
-    Ogre::Vector3 direction;
-    Ogre::Real speed;
-
-    ballNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0, 250, 0));
-    ballEnt = mSceneMgr->createEntity("sphere.mesh");
-    ballNode->attachObject(ballEnt);
-    btCollisionShape *newRigidShape = new btSphereShape(100);
-    this->physicsEngine->getCollisionShapes().push_back(newRigidShape);
- 
-    //set the initial position and transform. For this demo, we set the tranform to be none
-    btTransform startTransform;
-    startTransform.setIdentity();
-
-    btScalar mass = 0.1f;
-    btVector3 localInertia(0,0,0);
- 
-    startTransform.setOrigin(btVector3(0,400,0));
-    newRigidShape->calculateLocalInertia(mass, localInertia);
-    MyMotionState* motionState = new MyMotionState(startTransform, ballNode);
-    btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, newRigidShape, localInertia);
-    btRigidBody *body = new btRigidBody(rbInfo);
-    dynamicsWorld->addRigidBody(body);
-    dynamicsWorld->setGravity(btVector3(0,-10,0));
+    setUpLighting();
+    btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
+    Room* ballRoom = new Room(mSceneMgr, physicsEngine);
+    paddle = new Paddle(mSceneMgr, physicsEngine);
+    Ball* ball = new Ball(mSceneMgr, physicsEngine);
+    
+    paddle->getNode()->createChildSceneNode(Ogre::Vector3(0, 0,0))->attachObject(mCamera);
 
     //add the body to the dynamics world
- 
 
 }
 
 void TutorialApplication::createCamera()
 {
     mCamera = mSceneMgr->createCamera("PlayerCam");
-    mCamera->setPosition(Ogre::Vector3(-25, 90, 30));
-    mCamera->lookAt(Ogre::Vector3(0, 30, 0));
+    mCamera->setPosition(Ogre::Vector3(0, 50, -400));
+    mCamera->lookAt(Ogre::Vector3(0, 750, 750));
     mCamera->setNearClipDistance(5);
-    mCamera->setFarClipDistance(1000);
+    mCamera->setFarClipDistance(3000);
     mCameraMan = new OgreBites::SdkCameraMan(mCamera);
+}
+
+void TutorialApplication::setUpLighting()
+{
+    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+    Ogre::Light* rLight = mSceneMgr->createLight( "rLight" );
+    Ogre::Light* gLight = mSceneMgr->createLight( "gLight" );
+    Ogre::Light* bLight = mSceneMgr->createLight( "bLight" );
+    rLight->setType(Ogre::Light::LT_POINT);
+    rLight->setPosition(0,400,0);
+    rLight->setDiffuseColour(1,0,0);
+    rLight->setSpecularColour(1,0,0);
+    gLight->setType(Ogre::Light::LT_POINT);
+    gLight->setPosition(-350,-250,0);
+    gLight->setDiffuseColour(0,1,0);
+    gLight->setSpecularColour(0,1,0);
+    bLight->setType(Ogre::Light::LT_POINT);
+    bLight->setPosition(350,-250,0);
+    bLight->setDiffuseColour(0,0,1);
+    bLight->setSpecularColour(0,0,1);
+}
+
+
+
+bool TutorialApplication::processUnbufferedInput(const Ogre::FrameEvent& fe){
+    return true;
+}
+
+bool TutorialApplication::keyPressed( const OIS::KeyEvent &arg )
+{
+    if (mTrayMgr->isDialogVisible()) return true;   // don't process any more keys if dialog is up
+
+    /*if (arg.key == OIS::KC_F)   // toggle visibility of advanced frame stats
+    {
+        mTrayMgr->toggleAdvancedFrameStats();
+    }
+    else */if (arg.key == OIS::KC_W)
+    {
+       btRigidBody* body =  paddle->getBody();
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(vel.x(), vel.y(), 200));
+    }
+    else if (arg.key == OIS::KC_S)
+    {
+        btRigidBody* body =  paddle->getBody();
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(vel.x(), vel.y(), -200));
+        
+    }
+    else if (arg.key == OIS::KC_Q)
+    {
+        btRigidBody* body =  paddle->getBody();
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(vel.x(), -200, vel.z()));
+    }
+    else if (arg.key == OIS::KC_E)
+    {
+        btRigidBody* body =  paddle->getBody();
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(vel.x(), 200, vel.z()));
+    }
+    else if (arg.key == OIS::KC_A)
+    {
+        btRigidBody* body =  paddle->getBody();
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(-200, vel.y(), vel.z()));
+    }
+    else if (arg.key == OIS::KC_D)
+    {
+        btRigidBody* body =  paddle->getBody();
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(200, vel.y(), vel.z()));
+    }
+    else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
+    {
+        if (mDetailsPanel->getTrayLocation() == OgreBites::TL_NONE)
+        {
+            mTrayMgr->moveWidgetToTray(mDetailsPanel, OgreBites::TL_TOPRIGHT, 0);
+            mDetailsPanel->show();
+        }
+        else
+        {
+            mTrayMgr->removeWidgetFromTray(mDetailsPanel);
+            mDetailsPanel->hide();
+        }
+    }
+    else if(arg.key == OIS::KC_F5)   // refresh all textures
+    {
+        Ogre::TextureManager::getSingleton().reloadAll();
+    }
+    else if (arg.key == OIS::KC_ESCAPE)
+    {
+        mShutDown = true;
+    }
+
+    //mCameraMan->injectKeyDown(arg);
+    return true;
+}
+
+bool TutorialApplication::keyReleased( const OIS::KeyEvent &arg )
+{   
+    if (arg.key == OIS::KC_W || arg.key == OIS::KC_S)
+    {
+       btRigidBody* body =  paddle->getBody();
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(vel.x(), vel.y(), 0));
+    }
+    else if (arg.key == OIS::KC_Q||arg.key == OIS::KC_E)
+    {
+        btRigidBody* body =  paddle->getBody();
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(vel.x(), 0, vel.z()));
+    }
+    else if (arg.key == OIS::KC_A||arg.key == OIS::KC_D)
+    {
+        btRigidBody* body =  paddle->getBody();
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(0, vel.y(), vel.z()));
+    }
+    return true;
 }
 //---------------------------------------------------------------------------
 
