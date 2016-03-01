@@ -5,13 +5,23 @@
 #include <Ogre.h>
 #include "MyMotionState.h"
 
-#define BALL_SCALE 0.3f
+#define BALL_SCALE 0.5f
 
 class Ball{
+Ogre::SceneNode* ballNode;
+btRigidBody* body;
 
 public:
 	Ball(Ogre::SceneManager*, Physics*);
 	~Ball();
+	Ogre::SceneNode* getNode(){
+    	return ballNode;
+    }
+    btRigidBody* getBody(){
+    	return body;
+    }
+
+
 	
 };
 

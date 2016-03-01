@@ -22,3 +22,6 @@ void MyMotionState::setWorldTransform(const btTransform &worldTrans) {
     // also the getCube function returns a cube that isnt centered on Z
     mVisibleobj->setPosition(pos.x(), pos.y(), pos.z());
 }
+btTransform* MyMotionState::getTransPointer(){
+    return &mPos1;
+}

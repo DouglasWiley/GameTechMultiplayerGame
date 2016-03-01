@@ -131,8 +131,6 @@ void BaseApplication::createFrameListener(void)
     mInputContext.mKeyboard = mKeyboard;
     mInputContext.mMouse = mMouse;
     mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName", mWindow, mInputContext, this);
-    mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-    mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
     mTrayMgr->hideCursor();
 
     // Create a params panel for displaying sample details
@@ -264,10 +262,10 @@ bool BaseApplication::setup(void)
     // Load resources
     loadResources();
 
+    createFrameListener();
+    
     // Create the scene
     createScene();
-
-    createFrameListener();
 
     return true;
 };

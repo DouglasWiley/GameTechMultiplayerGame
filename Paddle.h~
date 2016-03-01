@@ -5,7 +5,7 @@
 #include <Ogre.h>
 #include "MyMotionState.h"
 
-#define PADDLE_SCALE 4.0f
+#define PADDLE_SCALE 1.5f
 
 class Paddle{
 

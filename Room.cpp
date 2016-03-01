@@ -16,6 +16,7 @@ Room::Room(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
     for(int i = 0; i < NUM_WALLS; i++){
         walls[i] = mSceneMgr->createEntity("wall");
         walls[i]->setMaterialName("Examples/Rockwall");
+        walls[i]->setCastShadows(true);
     }
 
     //FLOOR
@@ -70,7 +71,7 @@ void Room::CreateBulletWall(btVector3 originVector, btVector3 shape, Physics* ph
     btDefaultMotionState *groundMotionState = new btDefaultMotionState(groundTransform); 
     groundShape->calculateLocalInertia(groundMass, localGroundInertia);
     btRigidBody::btRigidBodyConstructionInfo groundRBInfo(groundMass, groundMotionState, groundShape, localGroundInertia);
-    groundRBInfo.m_restitution  = 0.5f;
+    groundRBInfo.m_restitution  = 1.1f;
     groundRBInfo.m_friction = 1.0f;
     btRigidBody *groundBody = new btRigidBody(groundRBInfo);
     //add the body to the dynamics world

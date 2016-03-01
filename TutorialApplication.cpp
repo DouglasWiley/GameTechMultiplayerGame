@@ -45,6 +45,28 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     physicsEngine->getDynamicsWorld()->stepSimulation(evt.timeSinceLastFrame, 60);
 
+    float newx, newy, newz;
+    btRigidBody* body =  ball->getBody();
+    btVector3 vel = body->getLinearVelocity();
+    float maxSpeed = 600; 
+    float minSpeed = 200; 
+    newx=vel.x();
+    newy=vel.y();
+    newz=vel.z();
+    if (vel.z()<0)
+        newz=-400;
+    else if (vel.z()>0)
+        newz=400;
+    if (vel.x()<-maxSpeed)
+        newx=-maxSpeed;
+    else if (vel.x()>maxSpeed)
+        newx=maxSpeed;
+    if (vel.y()<-maxSpeed)
+        newy=-maxSpeed;
+    else if (vel.y()>maxSpeed)
+        newy=maxSpeed;
+    body->setLinearVelocity(btVector3(newx, newy, newz));
+
     if (!mTrayMgr->isDialogVisible())
     {
         mCameraMan->frameRenderingQueued(evt);   // If dialog isn't up, then update the camera
@@ -60,30 +82,64 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         }
     }
 
+    
+
+    if(time <= 0){
+        if(!endDisplay){
+            endDisplay = mTrayMgr->createTextBox(OgreBites::TL_CENTER, "End Display", ("GAME OVER"), 1920, 1080);
+        }
+        scoreDisplay->hide();
+        timerDisplay->hide();
+        paddle->getBody()->setLinearVelocity(btVector3(0,0,0));
+        ball->getBody()->setLinearVelocity(btVector3(0,0,0));
+        ball->getBody()->setGravity(btVector3(0,0,0));
+    }
+    else{
+        std::ostringstream convert;
+        convert << score;
+        scoreDisplay->setText(convert.str());
+
+        time -= evt.timeSinceLastFrame;
+        std::ostringstream convert2;
+        convert2 << ((int) time);
+        timerDisplay->setText(convert2.str());
+    }
+
     return true;
 }
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
+    score = 0;
+    time = 10;
+    endDisplay = 0;
     setUpLighting();
     btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
     Room* ballRoom = new Room(mSceneMgr, physicsEngine);
     paddle = new Paddle(mSceneMgr, physicsEngine);
-    Ball* ball = new Ball(mSceneMgr, physicsEngine);
-    
+    ball = new Ball(mSceneMgr, physicsEngine);
+    ball->getBody()->setLinearVelocity(btVector3(200, 0, -200));
     paddle->getNode()->createChildSceneNode(Ogre::Vector3(0, 0,0))->attachObject(mCamera);
+    //Setup Score
+    scoreDisplay = mTrayMgr->createTextBox(OgreBites::TL_TOPLEFT, "Score", ("Score"), 100, 100);
+    std::ostringstream convert;
+    convert << score;
+    scoreDisplay->setText(convert.str());
 
-    //add the body to the dynamics world
+    timerDisplay = mTrayMgr->createTextBox(OgreBites::TL_TOPLEFT, "Timer", ("Time Left:"), 100, 100);
+    std::ostringstream convert2;
+    convert2 << time;
+    timerDisplay->setText(convert2.str());
 
 }
 
 void TutorialApplication::createCamera()
 {
     mCamera = mSceneMgr->createCamera("PlayerCam");
-    mCamera->setPosition(Ogre::Vector3(0, 50, -400));
-    mCamera->lookAt(Ogre::Vector3(0, 750, 750));
+    mCamera->setPosition(Ogre::Vector3(-750, 750, -750));
+    mCamera->lookAt(Ogre::Vector3(750, -750, 750));
     mCamera->setNearClipDistance(5);
-    mCamera->setFarClipDistance(3000);
+    mCamera->setFarClipDistance(4000);
     mCameraMan = new OgreBites::SdkCameraMan(mCamera);
 }
 
@@ -115,48 +171,38 @@ bool TutorialApplication::processUnbufferedInput(const Ogre::FrameEvent& fe){
 
 bool TutorialApplication::keyPressed( const OIS::KeyEvent &arg )
 {
+
+
     if (mTrayMgr->isDialogVisible()) return true;   // don't process any more keys if dialog is up
 
     /*if (arg.key == OIS::KC_F)   // toggle visibility of advanced frame stats
     {
         mTrayMgr->toggleAdvancedFrameStats();
     }
-    else */if (arg.key == OIS::KC_W)
-    {
-       btRigidBody* body =  paddle->getBody();
-       btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(vel.x(), vel.y(), 200));
-    }
+    else */
     else if (arg.key == OIS::KC_S)
     {
         btRigidBody* body =  paddle->getBody();
        btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(vel.x(), vel.y(), -200));
-        
+       body->setLinearVelocity(btVector3(vel.x(), -400, vel.z()));
     }
-    else if (arg.key == OIS::KC_Q)
+    else if (arg.key == OIS::KC_W)
     {
         btRigidBody* body =  paddle->getBody();
        btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(vel.x(), -200, vel.z()));
-    }
-    else if (arg.key == OIS::KC_E)
-    {
-        btRigidBody* body =  paddle->getBody();
-       btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(vel.x(), 200, vel.z()));
+       body->setLinearVelocity(btVector3(vel.x(), 400, vel.z()));
     }
     else if (arg.key == OIS::KC_A)
     {
-        btRigidBody* body =  paddle->getBody();
+    btRigidBody* body =  paddle->getBody();
        btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(-200, vel.y(), vel.z()));
+       body->setLinearVelocity(btVector3(400, vel.y(), vel.z()));
     }
     else if (arg.key == OIS::KC_D)
     {
         btRigidBody* body =  paddle->getBody();
        btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(200, vel.y(), vel.z()));
+       body->setLinearVelocity(btVector3(-400, vel.y(), vel.z()));
     }
     else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
     {
@@ -190,19 +236,13 @@ bool TutorialApplication::keyReleased( const OIS::KeyEvent &arg )
     {
        btRigidBody* body =  paddle->getBody();
        btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(vel.x(), vel.y(), 0));
-    }
-    else if (arg.key == OIS::KC_Q||arg.key == OIS::KC_E)
-    {
-        btRigidBody* body =  paddle->getBody();
-       btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(vel.x(), 0, vel.z()));
+       body->setLinearVelocity(btVector3(vel.x(), 1, vel.z()));
     }
     else if (arg.key == OIS::KC_A||arg.key == OIS::KC_D)
     {
         btRigidBody* body =  paddle->getBody();
        btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(0, vel.y(), vel.z()));
+       body->setLinearVelocity(btVector3(1, vel.y(), vel.z()));
     }
     return true;
 }

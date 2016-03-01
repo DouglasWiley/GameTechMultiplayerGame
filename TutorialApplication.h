@@ -25,6 +25,7 @@ http://www.ogre3d.org/wiki/
 #include "Ball.h"
 #include "Paddle.h"
 #include "MyMotionState.h"
+#include <sstream>
 
 //---------------------------------------------------------------------------
 
@@ -38,6 +39,12 @@ public:
 private:
 	Physics* physicsEngine;
   Paddle* paddle;
+  Ball* ball;
+  int score;
+  float time;
+  OgreBites::TextBox* scoreDisplay;
+  OgreBites::TextBox* timerDisplay;
+  OgreBites::TextBox* endDisplay;
   bool processUnbufferedInput(const Ogre::FrameEvent& evt);
 
 protected:

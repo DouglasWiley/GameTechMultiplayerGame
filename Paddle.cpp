@@ -4,8 +4,8 @@
 
 Paddle::Paddle(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
     x = 0;
-    y = 500;
-    z = -200;
+    y = 750;
+    z = 0;
 	btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
     PaddleNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(x, y, z));
     PaddleEnt = mSceneMgr->createEntity("cube.mesh");
@@ -18,7 +18,7 @@ Paddle::Paddle(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
     btTransform startTransform;
     startTransform.setIdentity();
 
-    btScalar mass = 10000;
+    btScalar mass = 10000.0f;
     btVector3 localInertia(0,0,0);
  
     startTransform.setOrigin(btVector3(x, y, z));
@@ -26,12 +26,14 @@ Paddle::Paddle(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
     MyMotionState* motionState = new MyMotionState(startTransform, PaddleNode);
     btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, newRigidShape, localInertia);
     body = new btRigidBody(rbInfo);
-    body->setRestitution(1.5);
+    body->setRestitution(0.8);
 
 
     dynamicsWorld->addRigidBody(body);
     body->setGravity(btVector3(0,0,0));
     body->setAngularFactor(btVector3(0,0,0));
+    body->setLinearVelocity(btVector3(1.0f, 0, 0));
+    //body->activate(true);
 }
 Paddle::~Paddle(){
 	

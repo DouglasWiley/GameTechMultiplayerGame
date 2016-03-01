@@ -4,8 +4,6 @@
 
 Ball::Ball(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
 	btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
-    
-    Ogre::SceneNode* ballNode;
     Ogre::Entity* ballEnt;
     Ogre::Vector3 direction;
     Ogre::Real speed;
@@ -29,7 +27,7 @@ Ball::Ball(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
     newRigidShape->calculateLocalInertia(mass, localInertia);
     MyMotionState* motionState = new MyMotionState(startTransform, ballNode);
     btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, newRigidShape, localInertia);
-    btRigidBody *body = new btRigidBody(rbInfo);
+    body = new btRigidBody(rbInfo);
     body->setRestitution(1.8);
     dynamicsWorld->addRigidBody(body);
     body->setGravity(btVector3(0,-200,0));

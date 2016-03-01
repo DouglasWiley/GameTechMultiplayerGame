@@ -11,6 +11,7 @@ public:
     void setNode(Ogre::SceneNode *node);
     virtual void getWorldTransform(btTransform &worldTrans) const ;
     virtual void setWorldTransform(const btTransform &worldTrans);
+    btTransform* getTransPointer();
 protected:
     Ogre::SceneNode *mVisibleobj;
     btTransform mPos1;
