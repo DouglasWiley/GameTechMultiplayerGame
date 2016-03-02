@@ -17,6 +17,7 @@ http://www.ogre3d.org/wiki/
 
 #include "TutorialApplication.h"
 
+
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
 {
@@ -27,7 +28,6 @@ TutorialApplication::TutorialApplication(void)
 TutorialApplication::~TutorialApplication(void)
 {
 }
-
 
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
@@ -43,10 +43,12 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     mTrayMgr->frameRenderingQueued(evt);
 
+    btRigidBody* body =  ball->getBody();
     physicsEngine->getDynamicsWorld()->stepSimulation(evt.timeSinceLastFrame, 60);
+    physicsEngine->getDynamicsWorld()->contactPairTest(body, ballRoom->getTargetBody(), *targetCallback);
 
     float newx, newy, newz;
-    btRigidBody* body =  ball->getBody();
+    btRigidBody* paddleBody =  paddle->getBody();
     btVector3 vel = body->getLinearVelocity();
     float maxSpeed = 600; 
     float minSpeed = 200; 
@@ -82,11 +84,12 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         }
     }
 
-    
-
     if(time <= 0){
         if(!endDisplay){
-            endDisplay = mTrayMgr->createTextBox(OgreBites::TL_CENTER, "End Display", ("GAME OVER"), 1920, 1080);
+            endDisplay = mTrayMgr->createTextBox(OgreBites::TL_CENTER, "End Display", ("GAME OVER"), 1700, 900);
+            std::ostringstream convert;
+            convert << "YOUR FINAL SCORE WAS: \n" << score;
+            endDisplay->setText(convert.str());
         }
         scoreDisplay->hide();
         timerDisplay->hide();
@@ -111,7 +114,7 @@ void TutorialApplication::createScene(void)
     endDisplay = 0;
     setUpLighting();
     btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
-    Room* ballRoom = new Room(mSceneMgr, physicsEngine);
+    ballRoom = new Room(mSceneMgr, physicsEngine);
     paddle = new Paddle(mSceneMgr, physicsEngine);
     ball = new Ball(mSceneMgr, physicsEngine);
     ball->getBody()->setLinearVelocity(btVector3(200, 0, -200));
@@ -122,6 +125,8 @@ void TutorialApplication::createScene(void)
 
     timerDisplay = mTrayMgr->createTextBox(OgreBites::TL_TOPLEFT, "Timer", ("Time Left:"), 100, 100);
     placeIntInDisplay(timerDisplay, time);
+
+    targetCallback = new MyContactResultCallback(&score, &time);
 
 }
 
@@ -201,18 +206,6 @@ bool TutorialApplication::keyPressed( const OIS::KeyEvent &arg )
         btRigidBody* body =  paddle->getBody();
        btVector3 vel = body->getLinearVelocity();
        body->setLinearVelocity(btVector3(-400, vel.y(), vel.z()));
-    }
-    else if (arg.key == OIS::KC_Q)
-    {
-        btRigidBody* body =  paddle->getBody();
-       btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(vel.x(), vel.y(), 400));
-    }
-    else if (arg.key == OIS::KC_E)
-    {
-        btRigidBody* body =  paddle->getBody();
-       btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(vel.x(), vel.y(), -400));
     }
     else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
     {

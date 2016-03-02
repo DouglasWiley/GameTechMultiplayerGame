@@ -10,12 +10,14 @@
 
 
 class Room{
-
+private:
+	btRigidBody* targetBody;
 public:
 	Room(Ogre::SceneManager*, Physics*);
 	~Room();
-	void CreateBulletWall(btVector3 originVector, btVector3 groundShape, Physics* physicsEngine);
+	btRigidBody* CreateBulletWall(btVector3 originVector, btVector3 groundShape, Physics* physicsEngine);
 	void CreateTarget(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine, Ogre::SceneNode* wallNode);
+	btRigidBody* getTargetBody() { return targetBody; };
 };
 
 #endif

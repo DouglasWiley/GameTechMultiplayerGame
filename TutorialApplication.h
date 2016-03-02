@@ -28,6 +28,31 @@ http://www.ogre3d.org/wiki/
 #include <sstream>
 
 //---------------------------------------------------------------------------
+struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback
+{
+    MyContactResultCallback(int* scorePtr, float* timePtr) : context(scorePtr) , currentTimePtr(timePtr)
+     , lastTimeSeen(*timePtr){
+
+    }
+    btScalar addSingleResult(btManifoldPoint& cp,
+        const btCollisionObjectWrapper* colObj0Wrap,
+        int partId0,
+        int index0,
+        const btCollisionObjectWrapper* colObj1Wrap,
+        int partId1,
+        int index1)
+    {
+      if(lastTimeSeen - *currentTimePtr > 1){
+          (*context) += 10;
+          lastTimeSeen = *currentTimePtr;
+        }
+        // your callback code here
+    }
+    int* context;
+    float* currentTimePtr;
+    float lastTimeSeen;
+};
+
 
 class TutorialApplication : public BaseApplication
 {
@@ -40,6 +65,7 @@ private:
 	Physics* physicsEngine;
   Paddle* paddle;
   Ball* ball;
+  Room* ballRoom;
   int score;
   float time;
   OgreBites::TextBox* scoreDisplay;
@@ -47,6 +73,7 @@ private:
   OgreBites::TextBox* endDisplay;
   bool processUnbufferedInput(const Ogre::FrameEvent& evt);
   void placeIntInDisplay(OgreBites::TextBox*, const int num);
+  MyContactResultCallback* targetCallback;
 
 protected:
     virtual void createScene(void);

@@ -61,7 +61,7 @@ Room::~Room(){
 }
 
 
-void Room::CreateBulletWall(btVector3 originVector, btVector3 shape, Physics* physicsEngine){
+btRigidBody* Room::CreateBulletWall(btVector3 originVector, btVector3 shape, Physics* physicsEngine){
     btTransform groundTransform;
     groundTransform.setIdentity();
     groundTransform.setOrigin(originVector);
@@ -77,6 +77,7 @@ void Room::CreateBulletWall(btVector3 originVector, btVector3 shape, Physics* ph
     //add the body to the dynamics world
     btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
     dynamicsWorld->addRigidBody(groundBody);
+    return groundBody;
 }
 
 void Room::CreateTarget(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine, Ogre::SceneNode* wallNode){
@@ -93,6 +94,6 @@ void Room::CreateTarget(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine, O
     targetNode->attachObject(targetEntity);
     Ogre::Vector3 pos = targetNode->getPosition();
     float targetSize = WALL_SIZE * 0.2;
-    CreateBulletWall(btVector3(0, WALL_SIZE/2, WALL_SIZE/2 - 1), btVector3(targetSize/2, targetSize/2, 1), physicsEngine);
+    targetBody = CreateBulletWall(btVector3(0, WALL_SIZE/2, WALL_SIZE/2 - 1), btVector3(targetSize/2, targetSize/2, 1), physicsEngine);
 
 }
