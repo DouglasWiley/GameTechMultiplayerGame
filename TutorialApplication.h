@@ -46,6 +46,7 @@ private:
   OgreBites::TextBox* timerDisplay;
   OgreBites::TextBox* endDisplay;
   bool processUnbufferedInput(const Ogre::FrameEvent& evt);
+  void placeIntInDisplay(OgreBites::TextBox*, const int num);
 
 protected:
     virtual void createScene(void);

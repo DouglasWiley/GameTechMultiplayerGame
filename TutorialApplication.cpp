@@ -95,14 +95,10 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         ball->getBody()->setGravity(btVector3(0,0,0));
     }
     else{
-        std::ostringstream convert;
-        convert << score;
-        scoreDisplay->setText(convert.str());
+        placeIntInDisplay(scoreDisplay, score);
 
         time -= evt.timeSinceLastFrame;
-        std::ostringstream convert2;
-        convert2 << ((int) time);
-        timerDisplay->setText(convert2.str());
+        placeIntInDisplay(timerDisplay, time);
     }
 
     return true;
@@ -111,7 +107,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 void TutorialApplication::createScene(void)
 {
     score = 0;
-    time = 10;
+    time = 60;
     endDisplay = 0;
     setUpLighting();
     btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
@@ -122,15 +118,17 @@ void TutorialApplication::createScene(void)
     paddle->getNode()->createChildSceneNode(Ogre::Vector3(0, 0,0))->attachObject(mCamera);
     //Setup Score
     scoreDisplay = mTrayMgr->createTextBox(OgreBites::TL_TOPLEFT, "Score", ("Score"), 100, 100);
-    std::ostringstream convert;
-    convert << score;
-    scoreDisplay->setText(convert.str());
+    placeIntInDisplay(scoreDisplay, score);
 
     timerDisplay = mTrayMgr->createTextBox(OgreBites::TL_TOPLEFT, "Timer", ("Time Left:"), 100, 100);
-    std::ostringstream convert2;
-    convert2 << time;
-    timerDisplay->setText(convert2.str());
+    placeIntInDisplay(timerDisplay, time);
 
+}
+
+void TutorialApplication::placeIntInDisplay(OgreBites::TextBox* display, const int num){
+    std::ostringstream convert;
+    convert << num;
+    display->setText(convert.str());
 }
 
 void TutorialApplication::createCamera()
@@ -204,6 +202,18 @@ bool TutorialApplication::keyPressed( const OIS::KeyEvent &arg )
        btVector3 vel = body->getLinearVelocity();
        body->setLinearVelocity(btVector3(-400, vel.y(), vel.z()));
     }
+    else if (arg.key == OIS::KC_Q)
+    {
+        btRigidBody* body =  paddle->getBody();
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(vel.x(), vel.y(), 400));
+    }
+    else if (arg.key == OIS::KC_E)
+    {
+        btRigidBody* body =  paddle->getBody();
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(vel.x(), vel.y(), -400));
+    }
     else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
     {
         if (mDetailsPanel->getTrayLocation() == OgreBites::TL_NONE)
@@ -236,13 +246,13 @@ bool TutorialApplication::keyReleased( const OIS::KeyEvent &arg )
     {
        btRigidBody* body =  paddle->getBody();
        btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(vel.x(), 1, vel.z()));
+       body->setLinearVelocity(btVector3(vel.x(), 0, vel.z()));
     }
     else if (arg.key == OIS::KC_A||arg.key == OIS::KC_D)
     {
         btRigidBody* body =  paddle->getBody();
        btVector3 vel = body->getLinearVelocity();
-       body->setLinearVelocity(btVector3(1, vel.y(), vel.z()));
+       body->setLinearVelocity(btVector3(0, vel.y(), vel.z()));
     }
     return true;
 }

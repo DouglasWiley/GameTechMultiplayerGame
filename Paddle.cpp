@@ -32,9 +32,9 @@ Paddle::Paddle(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
     dynamicsWorld->addRigidBody(body);
     body->setGravity(btVector3(0,0,0));
     body->setAngularFactor(btVector3(0,0,0));
-    body->setLinearVelocity(btVector3(1.0f, 0, 0));
-    //body->activate(true);
+    body->forceActivationState(DISABLE_DEACTIVATION);
 }
+
 Paddle::~Paddle(){
 	
 }

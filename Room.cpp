@@ -91,4 +91,8 @@ void Room::CreateTarget(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine, O
     Ogre::SceneNode* targetNode = wallNode->createChildSceneNode(Ogre::Vector3(xvalue*WALL_SIZE, 1, zvalue*WALL_SIZE));
     targetNode->scale(Ogre::Vector3(0.2, 0.2, 0.2));
     targetNode->attachObject(targetEntity);
+    Ogre::Vector3 pos = targetNode->getPosition();
+    float targetSize = WALL_SIZE * 0.2;
+    CreateBulletWall(btVector3(0, WALL_SIZE/2, WALL_SIZE/2 - 1), btVector3(targetSize/2, targetSize/2, 1), physicsEngine);
+
 }
