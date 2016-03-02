@@ -19,40 +19,45 @@ Room::Room(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
         walls[i]->setCastShadows(true);
     }
 
+    wallBodyArray = new btRigidBody*[6];
+
+
     //FLOOR
     mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(walls[0]);
-    CreateBulletWall(btVector3(0, 0, 0), btVector3(btScalar(WALL_SIZE),btScalar(1.),btScalar(WALL_SIZE)),physicsEngine);
+    wallBodyArray[0] = CreateBulletWall(btVector3(0, 0, 0), btVector3(btScalar(WALL_SIZE),btScalar(1.),btScalar(WALL_SIZE)),physicsEngine);
 
     //CEILING
     Ogre::SceneNode* sceneForManip = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0, WALL_SIZE, 0));
     sceneForManip->attachObject(walls[1]);
     sceneForManip->roll(Ogre::Degree(180));
-    CreateBulletWall(btVector3(0, WALL_SIZE, 0), btVector3(btScalar(WALL_SIZE),btScalar(1.),btScalar(WALL_SIZE)),physicsEngine);
+    wallBodyArray[1] = CreateBulletWall(btVector3(0, WALL_SIZE, 0), btVector3(btScalar(WALL_SIZE),btScalar(1.),btScalar(WALL_SIZE)),physicsEngine);
 
     //LEFT WALL
     sceneForManip = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(-WALL_SIZE/2, WALL_SIZE/2, 0));
     sceneForManip->attachObject(walls[2]);
     sceneForManip->roll(Ogre::Degree(-90));
-    CreateBulletWall(btVector3(-WALL_SIZE/2, WALL_SIZE/2, 0), btVector3(btScalar(1.),btScalar(WALL_SIZE),btScalar(WALL_SIZE)),physicsEngine);
+    wallBodyArray[2] = CreateBulletWall(btVector3(-WALL_SIZE/2, WALL_SIZE/2, 0), btVector3(btScalar(1.),btScalar(WALL_SIZE),btScalar(WALL_SIZE)),physicsEngine);
 
     //RIGHT WALL
     sceneForManip = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(WALL_SIZE/2, WALL_SIZE/2, 0));
     sceneForManip->attachObject(walls[3]);
     sceneForManip->roll(Ogre::Degree(90));
-    CreateBulletWall(btVector3(WALL_SIZE/2, WALL_SIZE/2, 0), btVector3(btScalar(1.),btScalar(WALL_SIZE),btScalar(WALL_SIZE)),physicsEngine);
+    wallBodyArray[3] = CreateBulletWall(btVector3(WALL_SIZE/2, WALL_SIZE/2, 0), btVector3(btScalar(1.),btScalar(WALL_SIZE),btScalar(WALL_SIZE)),physicsEngine);
 
 
     //BACK WALL
     sceneForManip = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0, WALL_SIZE/2, -WALL_SIZE/2));
     sceneForManip->attachObject(walls[4]);
     sceneForManip->pitch(Ogre::Degree(90));
-    CreateBulletWall(btVector3(0, WALL_SIZE/2, -WALL_SIZE/2), btVector3(btScalar(WALL_SIZE),btScalar(WALL_SIZE),btScalar(1.0)),physicsEngine);
+    wallBodyArray[4] = CreateBulletWall(btVector3(0, WALL_SIZE/2, -WALL_SIZE/2), btVector3(btScalar(WALL_SIZE),btScalar(WALL_SIZE),btScalar(1.0)),physicsEngine);
 
     //FRONT WALL
     sceneForManip = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0, WALL_SIZE/2, WALL_SIZE/2));
     sceneForManip->attachObject(walls[5]);
     sceneForManip->pitch(Ogre::Degree(-90));
-    CreateBulletWall(btVector3(0, WALL_SIZE/2, WALL_SIZE/2), btVector3(btScalar(WALL_SIZE),btScalar(WALL_SIZE),btScalar(1.0)),physicsEngine);
+    wallBodyArray[5] = CreateBulletWall(btVector3(0, WALL_SIZE/2, WALL_SIZE/2), btVector3(btScalar(WALL_SIZE),btScalar(WALL_SIZE),btScalar(1.0)),physicsEngine);
+    
+
     CreateTarget(mSceneMgr, physicsEngine, sceneForManip);
 }
 

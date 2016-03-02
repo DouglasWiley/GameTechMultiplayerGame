@@ -26,13 +26,14 @@ http://www.ogre3d.org/wiki/
 #include "Paddle.h"
 #include "MyMotionState.h"
 #include <sstream>
+#include "SDL/SDL_mixer.h"
 
 //---------------------------------------------------------------------------
 struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback
 {
     MyContactResultCallback(int* scorePtr, float* timePtr) : context(scorePtr) , currentTimePtr(timePtr)
      , lastTimeSeen(*timePtr){
-
+      collisionSound = Mix_LoadWAV("music/party.wav");
     }
     btScalar addSingleResult(btManifoldPoint& cp,
         const btCollisionObjectWrapper* colObj0Wrap,
@@ -45,14 +46,39 @@ struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback
       if(lastTimeSeen - *currentTimePtr > 1){
           (*context) += 10;
           lastTimeSeen = *currentTimePtr;
+          Mix_PlayChannel(-1, collisionSound, 0);
         }
         // your callback code here
     }
     int* context;
     float* currentTimePtr;
     float lastTimeSeen;
+    Mix_Chunk* collisionSound;
 };
 
+struct MyCollisionCallback : public btCollisionWorld::ContactResultCallback
+{
+    MyCollisionCallback(float* timePtr, char* soundName) : currentTimePtr(timePtr), lastTimeSeen(*timePtr){
+      collisionSound = Mix_LoadWAV(soundName);
+    }
+    btScalar addSingleResult(btManifoldPoint& cp,
+        const btCollisionObjectWrapper* colObj0Wrap,
+        int partId0,
+        int index0,
+        const btCollisionObjectWrapper* colObj1Wrap,
+        int partId1,
+        int index1)
+    {
+      if(lastTimeSeen - *currentTimePtr > 1){
+          lastTimeSeen = *currentTimePtr;
+          Mix_PlayChannel(-1, collisionSound, 0);
+        }
+        // your callback code here
+    }
+    float* currentTimePtr;
+    float lastTimeSeen;
+    Mix_Chunk* collisionSound;
+};
 
 class TutorialApplication : public BaseApplication
 {
@@ -74,6 +100,8 @@ private:
   bool processUnbufferedInput(const Ogre::FrameEvent& evt);
   void placeIntInDisplay(OgreBites::TextBox*, const int num);
   MyContactResultCallback* targetCallback;
+  MyCollisionCallback* paddleCallback;
+  MyCollisionCallback* wallCallback;
 
 protected:
     virtual void createScene(void);

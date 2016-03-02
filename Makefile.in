@@ -330,7 +330,7 @@ assignment2_SOURCES = BaseApplication.cpp TutorialApplication.cpp Physics.cpp Ro
 #Ball.cpp ControlListener.cpp GameObject.cpp Overlay.cpp Player.cpp PlayerCamera.cpp PlayingField.cpp Simulator.cpp Wall.cpp 
 assignment2_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS)
 assignment2_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS)
-assignment2_LDFLAGS = -lOgreOverlay -lboost_system
+assignment2_LDFLAGS = -lOgreOverlay -lboost_system -lSDL -lSDL_mixer
 EXTRA_DIST = buildit makeit
 AUTOMAKE_OPTIONS = foreign
 all: config.h

@@ -45,7 +45,14 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     btRigidBody* body =  ball->getBody();
     physicsEngine->getDynamicsWorld()->stepSimulation(evt.timeSinceLastFrame, 60);
+
     physicsEngine->getDynamicsWorld()->contactPairTest(body, ballRoom->getTargetBody(), *targetCallback);
+    physicsEngine->getDynamicsWorld()->contactPairTest(body, paddle->getBody(), *paddleCallback);
+
+    btRigidBody** wallBTArray = ballRoom->getWallBodyArray();
+    for(int i = 0; i < NUM_WALLS; i++){
+        physicsEngine->getDynamicsWorld()->contactPairTest(body, wallBTArray[i], *wallCallback);
+    }
 
     float newx, newy, newz;
     btRigidBody* paddleBody =  paddle->getBody();
@@ -126,7 +133,13 @@ void TutorialApplication::createScene(void)
     timerDisplay = mTrayMgr->createTextBox(OgreBites::TL_TOPLEFT, "Timer", ("Time Left:"), 100, 100);
     placeIntInDisplay(timerDisplay, time);
 
+    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
     targetCallback = new MyContactResultCallback(&score, &time);
+
+    paddleCallback = new MyCollisionCallback(&time, (char*) "music/ballHittingPaddle.wav");
+
+    wallCallback = new MyCollisionCallback(&time, (char*) "music/ballHittingWall.wav");
+
 
 }
 
