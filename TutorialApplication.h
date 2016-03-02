@@ -31,8 +31,8 @@ http://www.ogre3d.org/wiki/
 //---------------------------------------------------------------------------
 struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback
 {
-    MyContactResultCallback(int* scorePtr, float* timePtr) : context(scorePtr) , currentTimePtr(timePtr)
-     , lastTimeSeen(*timePtr){
+    MyContactResultCallback(int* scorePtr, float* timePtr, bool* soundOn) : context(scorePtr) , currentTimePtr(timePtr)
+     , lastTimeSeen(*timePtr), soundOn(soundOn){
       collisionSound = Mix_LoadWAV("music/party.wav");
     }
     btScalar addSingleResult(btManifoldPoint& cp,
@@ -46,7 +46,8 @@ struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback
       if(lastTimeSeen - *currentTimePtr > 1){
           (*context) += 10;
           lastTimeSeen = *currentTimePtr;
-          Mix_PlayChannel(-1, collisionSound, 0);
+          if(*soundOn)
+            Mix_PlayChannel(-1, collisionSound, 0);
         }
         // your callback code here
     }
@@ -54,11 +55,12 @@ struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback
     float* currentTimePtr;
     float lastTimeSeen;
     Mix_Chunk* collisionSound;
+    bool* soundOn;
 };
 
 struct MyCollisionCallback : public btCollisionWorld::ContactResultCallback
 {
-    MyCollisionCallback(float* timePtr, char* soundName) : currentTimePtr(timePtr), lastTimeSeen(*timePtr){
+    MyCollisionCallback(float* timePtr, char* soundName, bool* soundOn) : currentTimePtr(timePtr), lastTimeSeen(*timePtr), soundOn(soundOn){
       collisionSound = Mix_LoadWAV(soundName);
     }
     btScalar addSingleResult(btManifoldPoint& cp,
@@ -71,13 +73,15 @@ struct MyCollisionCallback : public btCollisionWorld::ContactResultCallback
     {
       if(lastTimeSeen - *currentTimePtr > 1){
           lastTimeSeen = *currentTimePtr;
-          Mix_PlayChannel(-1, collisionSound, 0);
+          if(*soundOn)
+            Mix_PlayChannel(-1, collisionSound, 0);
         }
         // your callback code here
     }
     float* currentTimePtr;
     float lastTimeSeen;
     Mix_Chunk* collisionSound;
+    bool* soundOn;
 };
 
 class TutorialApplication : public BaseApplication
@@ -94,6 +98,7 @@ private:
   Room* ballRoom;
   int score;
   float time;
+  bool soundOn;
   OgreBites::TextBox* scoreDisplay;
   OgreBites::TextBox* timerDisplay;
   OgreBites::TextBox* endDisplay;

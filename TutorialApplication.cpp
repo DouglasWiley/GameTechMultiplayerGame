@@ -119,6 +119,7 @@ void TutorialApplication::createScene(void)
     score = 0;
     time = 60;
     endDisplay = 0;
+    soundOn = true;
     setUpLighting();
     btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
     ballRoom = new Room(mSceneMgr, physicsEngine);
@@ -134,11 +135,11 @@ void TutorialApplication::createScene(void)
     placeIntInDisplay(timerDisplay, time);
 
     Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
-    targetCallback = new MyContactResultCallback(&score, &time);
+    targetCallback = new MyContactResultCallback(&score, &time, &soundOn);
 
-    paddleCallback = new MyCollisionCallback(&time, (char*) "music/ballHittingPaddle.wav");
+    paddleCallback = new MyCollisionCallback(&time, (char*) "music/ballHittingPaddle.wav", &soundOn);
 
-    wallCallback = new MyCollisionCallback(&time, (char*) "music/ballHittingWall.wav");
+    wallCallback = new MyCollisionCallback(&time, (char*) "music/ballHittingWall.wav", &soundOn);
 
 
 }
@@ -232,6 +233,9 @@ bool TutorialApplication::keyPressed( const OIS::KeyEvent &arg )
             mTrayMgr->removeWidgetFromTray(mDetailsPanel);
             mDetailsPanel->hide();
         }
+    }
+    else if(arg.key == OIS::KC_M){
+        soundOn = !soundOn;
     }
     else if(arg.key == OIS::KC_F5)   // refresh all textures
     {
