@@ -633,6 +633,10 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
+CEGUI_OGRE_LIBS
+CEGUI_OGRE_CFLAGS
+CEGUI_LIBS
+CEGUI_CFLAGS
 BULLET_LIBS
 BULLET_CFLAGS
 bullet_LIBS
@@ -797,7 +801,11 @@ OGRE_LIBS
 OIS_CFLAGS
 OIS_LIBS
 bullet_CFLAGS
-bullet_LIBS'
+bullet_LIBS
+CEGUI_CFLAGS
+CEGUI_LIBS
+CEGUI_OGRE_CFLAGS
+CEGUI_OGRE_LIBS'
 
 
 # Initialize some variables set by options.
@@ -1459,6 +1467,13 @@ Some influential environment variables:
   bullet_CFLAGS
               C compiler flags for bullet, overriding pkg-config
   bullet_LIBS linker flags for bullet, overriding pkg-config
+  CEGUI_CFLAGS
+              C compiler flags for CEGUI, overriding pkg-config
+  CEGUI_LIBS  linker flags for CEGUI, overriding pkg-config
+  CEGUI_OGRE_CFLAGS
+              C compiler flags for CEGUI_OGRE, overriding pkg-config
+  CEGUI_OGRE_LIBS
+              linker flags for CEGUI_OGRE, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -2882,6 +2897,7 @@ END
   fi
 fi
 ac_config_headers="$ac_config_headers config.h"
+
 
 
 ac_ext=cpp
@@ -8374,6 +8390,10 @@ _lt_linker_boilerplate=`cat conftest.err`
 $RM -r conftest*
 
 
+## CAVEAT EMPTOR:
+## There is no encapsulation within the following macros, do not change
+## the running order or otherwise move them around unless you know exactly
+## what you are doing...
 if test -n "$compiler"; then
 
 lt_prog_compiler_no_builtin_flag=
@@ -15503,6 +15523,194 @@ See \`config.log' for more details" "$LINENO" 5; }
 else
 	bullet_CFLAGS=$pkg_cv_bullet_CFLAGS
 	bullet_LIBS=$pkg_cv_bullet_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+fi
+
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for CEGUI" >&5
+$as_echo_n "checking for CEGUI... " >&6; }
+
+if test -n "$CEGUI_CFLAGS"; then
+    pkg_cv_CEGUI_CFLAGS="$CEGUI_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"CEGUI-0 >= 0.8\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "CEGUI-0 >= 0.8") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_CEGUI_CFLAGS=`$PKG_CONFIG --cflags "CEGUI-0 >= 0.8" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$CEGUI_LIBS"; then
+    pkg_cv_CEGUI_LIBS="$CEGUI_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"CEGUI-0 >= 0.8\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "CEGUI-0 >= 0.8") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_CEGUI_LIBS=`$PKG_CONFIG --libs "CEGUI-0 >= 0.8" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        CEGUI_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "CEGUI-0 >= 0.8" 2>&1`
+        else
+	        CEGUI_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "CEGUI-0 >= 0.8" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$CEGUI_PKG_ERRORS" >&5
+
+	as_fn_error $? "Package requirements (CEGUI-0 >= 0.8) were not met:
+
+$CEGUI_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables CEGUI_CFLAGS
+and CEGUI_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details." "$LINENO" 5
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	{ { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables CEGUI_CFLAGS
+and CEGUI_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details" "$LINENO" 5; }
+else
+	CEGUI_CFLAGS=$pkg_cv_CEGUI_CFLAGS
+	CEGUI_LIBS=$pkg_cv_CEGUI_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+fi
+
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for CEGUI_OGRE" >&5
+$as_echo_n "checking for CEGUI_OGRE... " >&6; }
+
+if test -n "$CEGUI_OGRE_CFLAGS"; then
+    pkg_cv_CEGUI_OGRE_CFLAGS="$CEGUI_OGRE_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"CEGUI-0-OGRE >= 0.7\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "CEGUI-0-OGRE >= 0.7") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_CEGUI_OGRE_CFLAGS=`$PKG_CONFIG --cflags "CEGUI-0-OGRE >= 0.7" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$CEGUI_OGRE_LIBS"; then
+    pkg_cv_CEGUI_OGRE_LIBS="$CEGUI_OGRE_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"CEGUI-0-OGRE >= 0.7\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "CEGUI-0-OGRE >= 0.7") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_CEGUI_OGRE_LIBS=`$PKG_CONFIG --libs "CEGUI-0-OGRE >= 0.7" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        CEGUI_OGRE_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "CEGUI-0-OGRE >= 0.7" 2>&1`
+        else
+	        CEGUI_OGRE_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "CEGUI-0-OGRE >= 0.7" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$CEGUI_OGRE_PKG_ERRORS" >&5
+
+	as_fn_error $? "Package requirements (CEGUI-0-OGRE >= 0.7) were not met:
+
+$CEGUI_OGRE_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables CEGUI_OGRE_CFLAGS
+and CEGUI_OGRE_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details." "$LINENO" 5
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	{ { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables CEGUI_OGRE_CFLAGS
+and CEGUI_OGRE_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details" "$LINENO" 5; }
+else
+	CEGUI_OGRE_CFLAGS=$pkg_cv_CEGUI_OGRE_CFLAGS
+	CEGUI_OGRE_LIBS=$pkg_cv_CEGUI_OGRE_LIBS
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 

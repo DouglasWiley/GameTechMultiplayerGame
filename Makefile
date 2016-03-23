@@ -86,7 +86,10 @@ DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(srcdir)/config.h.in depcomp $(noinst_HEADERS) compile \
 	config.guess config.sub install-sh missing ltmain.sh
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -98,13 +101,14 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_assignment2_OBJECTS = assignment2-BaseApplication.$(OBJEXT) \
-	assignment2-TutorialApplication.$(OBJEXT) \
+	assignment2-GameManager.$(OBJEXT) \
 	assignment2-Physics.$(OBJEXT) assignment2-Room.$(OBJEXT) \
 	assignment2-MyMotionState.$(OBJEXT) assignment2-Ball.$(OBJEXT) \
 	assignment2-Paddle.$(OBJEXT)
 assignment2_OBJECTS = $(am_assignment2_OBJECTS)
 am__DEPENDENCIES_1 =
 assignment2_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -194,18 +198,22 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /v/filer4b/v38q001/doug/CS354R/354r-p2/missing aclocal-1.14
+ACLOCAL = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AR = ar
-AUTOCONF = ${SHELL} /v/filer4b/v38q001/doug/CS354R/354r-p2/missing autoconf
-AUTOHEADER = ${SHELL} /v/filer4b/v38q001/doug/CS354R/354r-p2/missing autoheader
-AUTOMAKE = ${SHELL} /v/filer4b/v38q001/doug/CS354R/354r-p2/missing automake-1.14
+AUTOCONF = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/missing autoconf
+AUTOHEADER = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/missing autoheader
+AUTOMAKE = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/missing automake-1.14
 AWK = gawk
 BULLET_CFLAGS = 
 BULLET_LIBS = 
 CC = gcc
 CCDEPMODE = depmode=gcc3
+CEGUI_CFLAGS = -I/lusr/opt/cegui-0.8.4/include/cegui-0  
+CEGUI_LIBS = -L/lusr/opt/cegui-0.8.4/lib -lCEGUIBase-0  
+CEGUI_OGRE_CFLAGS = -pthread -I/lusr/opt/ogre-1.9/include -I/lusr/opt/ogre-1.9/include/OGRE -I/lusr/opt/cegui-0.8.4/include/cegui-0  
+CEGUI_OGRE_LIBS = -L/lusr/opt/ogre-1.9/lib -L/lusr/opt/cegui-0.8.4/lib -lCEGUIOgreRenderer-0 -lOgreMain -lpthread -lCEGUIBase-0  
 CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
@@ -239,7 +247,7 @@ LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIPO = 
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /v/filer4b/v38q001/doug/CS354R/354r-p2/missing makeinfo
+MAKEINFO = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /bin/mkdir -p
 NM = /usr/bin/nm -B
@@ -269,10 +277,10 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = strip
 VERSION = 0.1
-abs_builddir = /v/filer4b/v38q001/doug/CS354R/354r-p2
-abs_srcdir = /v/filer4b/v38q001/doug/CS354R/354r-p2
-abs_top_builddir = /v/filer4b/v38q001/doug/CS354R/354r-p2
-abs_top_srcdir = /v/filer4b/v38q001/doug/CS354R/354r-p2
+abs_builddir = /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory
+abs_srcdir = /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory
+abs_top_builddir = /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory
+abs_top_srcdir = /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
@@ -304,7 +312,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /v/filer4b/v38q001/doug/CS354R/354r-p2/install-sh
+install_sh = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -324,12 +332,11 @@ target_alias =
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
-noinst_HEADERS = BaseApplication.h TutorialApplication.h Physics.h Room.h MyMotionState.h Ball.h Paddle.h
+noinst_HEADERS = BaseApplication.h GameManager.h Game.h CollisionCallbacks.h Physics.h Room.h MyMotionState.h Ball.h Paddle.h
 assignment2_CPPFLAGS = -I$(top_srcdir)
-assignment2_SOURCES = BaseApplication.cpp TutorialApplication.cpp Physics.cpp Room.cpp MyMotionState.cpp Ball.cpp Paddle.cpp
-#Ball.cpp ControlListener.cpp GameObject.cpp Overlay.cpp Player.cpp PlayerCamera.cpp PlayingField.cpp Simulator.cpp Wall.cpp 
-assignment2_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS)
-assignment2_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS)
+assignment2_SOURCES = BaseApplication.cpp GameManager.cpp Physics.cpp Room.cpp MyMotionState.cpp Ball.cpp Paddle.cpp
+assignment2_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS) $(CEGUI_CFLAGS)
+assignment2_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS) $(CEGUI_LIBS) $(CEGUI_OGRE_LIBS)
 assignment2_LDFLAGS = -lOgreOverlay -lboost_system -lSDL -lSDL_mixer
 EXTRA_DIST = buildit makeit
 AUTOMAKE_OPTIONS = foreign
@@ -449,11 +456,11 @@ distclean-compile:
 
 include ./$(DEPDIR)/assignment2-Ball.Po
 include ./$(DEPDIR)/assignment2-BaseApplication.Po
+include ./$(DEPDIR)/assignment2-GameManager.Po
 include ./$(DEPDIR)/assignment2-MyMotionState.Po
 include ./$(DEPDIR)/assignment2-Paddle.Po
 include ./$(DEPDIR)/assignment2-Physics.Po
 include ./$(DEPDIR)/assignment2-Room.Po
-include ./$(DEPDIR)/assignment2-TutorialApplication.Po
 
 .cpp.o:
 	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -490,19 +497,19 @@ assignment2-BaseApplication.obj: BaseApplication.cpp
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-BaseApplication.obj `if test -f 'BaseApplication.cpp'; then $(CYGPATH_W) 'BaseApplication.cpp'; else $(CYGPATH_W) '$(srcdir)/BaseApplication.cpp'; fi`
 
-assignment2-TutorialApplication.o: TutorialApplication.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-TutorialApplication.o -MD -MP -MF $(DEPDIR)/assignment2-TutorialApplication.Tpo -c -o assignment2-TutorialApplication.o `test -f 'TutorialApplication.cpp' || echo '$(srcdir)/'`TutorialApplication.cpp
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-TutorialApplication.Tpo $(DEPDIR)/assignment2-TutorialApplication.Po
-#	$(AM_V_CXX)source='TutorialApplication.cpp' object='assignment2-TutorialApplication.o' libtool=no \
+assignment2-GameManager.o: GameManager.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-GameManager.o -MD -MP -MF $(DEPDIR)/assignment2-GameManager.Tpo -c -o assignment2-GameManager.o `test -f 'GameManager.cpp' || echo '$(srcdir)/'`GameManager.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-GameManager.Tpo $(DEPDIR)/assignment2-GameManager.Po
+#	$(AM_V_CXX)source='GameManager.cpp' object='assignment2-GameManager.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-TutorialApplication.o `test -f 'TutorialApplication.cpp' || echo '$(srcdir)/'`TutorialApplication.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-GameManager.o `test -f 'GameManager.cpp' || echo '$(srcdir)/'`GameManager.cpp
 
-assignment2-TutorialApplication.obj: TutorialApplication.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-TutorialApplication.obj -MD -MP -MF $(DEPDIR)/assignment2-TutorialApplication.Tpo -c -o assignment2-TutorialApplication.obj `if test -f 'TutorialApplication.cpp'; then $(CYGPATH_W) 'TutorialApplication.cpp'; else $(CYGPATH_W) '$(srcdir)/TutorialApplication.cpp'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-TutorialApplication.Tpo $(DEPDIR)/assignment2-TutorialApplication.Po
-#	$(AM_V_CXX)source='TutorialApplication.cpp' object='assignment2-TutorialApplication.obj' libtool=no \
+assignment2-GameManager.obj: GameManager.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-GameManager.obj -MD -MP -MF $(DEPDIR)/assignment2-GameManager.Tpo -c -o assignment2-GameManager.obj `if test -f 'GameManager.cpp'; then $(CYGPATH_W) 'GameManager.cpp'; else $(CYGPATH_W) '$(srcdir)/GameManager.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-GameManager.Tpo $(DEPDIR)/assignment2-GameManager.Po
+#	$(AM_V_CXX)source='GameManager.cpp' object='assignment2-GameManager.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-TutorialApplication.obj `if test -f 'TutorialApplication.cpp'; then $(CYGPATH_W) 'TutorialApplication.cpp'; else $(CYGPATH_W) '$(srcdir)/TutorialApplication.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-GameManager.obj `if test -f 'GameManager.cpp'; then $(CYGPATH_W) 'GameManager.cpp'; else $(CYGPATH_W) '$(srcdir)/GameManager.cpp'; fi`
 
 assignment2-Physics.o: Physics.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Physics.o -MD -MP -MF $(DEPDIR)/assignment2-Physics.Tpo -c -o assignment2-Physics.o `test -f 'Physics.cpp' || echo '$(srcdir)/'`Physics.cpp

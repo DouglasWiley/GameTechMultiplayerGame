@@ -1,12 +1,10 @@
-noinst_HEADERS = BaseApplication.h TutorialApplication.h Physics.h Room.h MyMotionState.h Ball.h Paddle.h
-#Ball.h ControlListener.h GameObject.h OgreMotionState.h Overlay.h Player.h PlayerCamera.h PlayingField.h Simulator.h Wall.h
+noinst_HEADERS = BaseApplication.h GameManager.h Game.h CollisionCallbacks.h Physics.h Room.h MyMotionState.h Ball.h Paddle.h
 
 bin_PROGRAMS = assignment2
 assignment2_CPPFLAGS = -I$(top_srcdir)
-assignment2_SOURCES = BaseApplication.cpp TutorialApplication.cpp Physics.cpp Room.cpp MyMotionState.cpp Ball.cpp Paddle.cpp
-#Ball.cpp ControlListener.cpp GameObject.cpp Overlay.cpp Player.cpp PlayerCamera.cpp PlayingField.cpp Simulator.cpp Wall.cpp 
-assignment2_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS)
-assignment2_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS)
+assignment2_SOURCES = BaseApplication.cpp GameManager.cpp Physics.cpp Room.cpp MyMotionState.cpp Ball.cpp Paddle.cpp
+assignment2_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS) $(CEGUI_CFLAGS)
+assignment2_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS) $(CEGUI_LIBS) $(CEGUI_OGRE_LIBS)
 assignment2_LDFLAGS = -lOgreOverlay -lboost_system -lSDL -lSDL_mixer
 
 EXTRA_DIST = buildit makeit
