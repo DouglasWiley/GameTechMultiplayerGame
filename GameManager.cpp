@@ -20,10 +20,13 @@ bool GameManager::frameRenderingQueued(const Ogre::FrameEvent& evt)
     // Need to capture/update each device
     mKeyboard->capture();
     mMouse->capture();
+    CEGUI::System::getSingleton().injectTimePulse(evt.timeSinceLastFrame);
 
-    mTrayMgr->frameRenderingQueued(evt);
 
-    if (!mTrayMgr->isDialogVisible())
+    //mTrayMgr->frameRenderingQueued(evt);
+
+
+    /*if (!mTrayMgr->isDialogVisible())
     {
         mCameraMan->frameRenderingQueued(evt);   // If dialog isn't up, then update the camera
         if (mDetailsPanel->isVisible())          // If details panel is visible, then update its contents
@@ -53,7 +56,7 @@ bool GameManager::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
         time -= evt.timeSinceLastFrame;
         placeIntInDisplay(timerDisplay, time);
-    }
+    } */
 
     game->frameRenderingQueued(evt, time);
 
@@ -62,6 +65,16 @@ bool GameManager::frameRenderingQueued(const Ogre::FrameEvent& evt)
 //---------------------------------------------------------------------------
 void GameManager::createScene(void)
 {
+    mRenderer = &CEGUI::OgreRenderer::bootstrapSystem();
+    CEGUI::ImageManager::setImagesetDefaultResourceGroup("Imagesets");
+    CEGUI::Font::setDefaultResourceGroup("Fonts");
+    CEGUI::Scheme::setDefaultResourceGroup("Schemes");
+    CEGUI::WidgetLookManager::setDefaultResourceGroup("LookNFeel");
+    CEGUI::WindowManager::setDefaultResourceGroup("Layouts");
+
+    CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+
     score = 0;
     time = 60;
     endDisplay = 0;
@@ -70,11 +83,11 @@ void GameManager::createScene(void)
     Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
 
     //Setup Score
-    scoreDisplay = mTrayMgr->createTextBox(OgreBites::TL_TOPLEFT, "Score", ("Score"), 100, 100);
+    /*scoreDisplay = mTrayMgr->createTextBox(OgreBites::TL_TOPLEFT, "Score", ("Score"), 100, 100);
     placeIntInDisplay(scoreDisplay, score);
 
     timerDisplay = mTrayMgr->createTextBox(OgreBites::TL_TOPLEFT, "Timer", ("Time Left:"), 100, 100);
-    placeIntInDisplay(timerDisplay, time);
+    placeIntInDisplay(timerDisplay, time);*/
 
     game = new DefaultGame();
     game->createScene(mSceneMgr, mCamera, time, score, soundOn);
@@ -119,7 +132,7 @@ void GameManager::setUpLighting()
 bool GameManager::keyPressed( const OIS::KeyEvent &arg )
 {
 
-    if (mTrayMgr->isDialogVisible()) 
+    /*if (mTrayMgr->isDialogVisible()) 
         return true;   // don't process any more keys if dialog is up
     else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
     {
@@ -134,7 +147,7 @@ bool GameManager::keyPressed( const OIS::KeyEvent &arg )
             mDetailsPanel->hide();
         }
     }
-    else if(arg.key == OIS::KC_M){
+    else */if(arg.key == OIS::KC_M){
         soundOn = !soundOn;
     }
     else if(arg.key == OIS::KC_F5)   // refresh all textures
@@ -154,6 +167,34 @@ bool GameManager::keyReleased( const OIS::KeyEvent &arg )
 {   
     game->keyReleased(arg);
     return true;
+}
+
+void GameManager::createFrameListener(void)
+{
+    Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
+    OIS::ParamList pl;
+    size_t windowHnd = 0;
+    std::ostringstream windowHndStr;
+ 
+    mWindow->getCustomAttribute("WINDOW", &windowHnd);
+    windowHndStr << windowHnd;
+    pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
+ 
+    mInputManager = OIS::InputManager::createInputSystem( pl );
+ 
+    mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
+    mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
+ 
+    mMouse->setEventCallback(this);
+    mKeyboard->setEventCallback(this);
+ 
+    //Set initial mouse clipping size
+    windowResized(mWindow);
+ 
+    //Register as a Window listener
+    Ogre::WindowEventUtilities::addWindowEventListener(mWindow, this);
+ 
+    mRoot->addFrameListener(this);
 }
 //---------------------------------------------------------------------------
 
