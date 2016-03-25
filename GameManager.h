@@ -4,6 +4,7 @@
 #include "BaseApplication.h"
 #include "Game.h"
 #include <sstream>
+#include <string>
 #include "SDL/SDL_mixer.h"
 
 #include <CEGUI/CEGUI.h>
@@ -19,14 +20,17 @@ public:
 private:
   Game* game;
   CEGUI::OgreRenderer* mRenderer;
+  CEGUI::Window *sheet;
+  CEGUI::Window *gui;
+  CEGUI::Window *scoreboard;
+  CEGUI::Window *timer;
 
   int score;
   float time;
   bool soundOn;
-  OgreBites::TextBox* scoreDisplay;
-  OgreBites::TextBox* timerDisplay;
-  OgreBites::TextBox* endDisplay;
-  void placeIntInDisplay(OgreBites::TextBox*, const int num);
+  void placeIntInDisplay(CEGUI::Window* display, std::string title, const int num);
+  void createMenu();
+  void createScoreboard();
 
 protected:
     virtual void createScene(void);
@@ -35,6 +39,10 @@ protected:
     virtual bool keyPressed(const OIS::KeyEvent& arg);
     virtual bool keyReleased(const OIS::KeyEvent& arg);
     virtual void createFrameListener(void);
+    virtual bool mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
+    virtual bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
+    virtual bool mouseMoved(const OIS::MouseEvent &arg);
+    bool renderGame(const CEGUI::EventArgs &e);
 };
 
 #endif

@@ -22,49 +22,47 @@ bool GameManager::frameRenderingQueued(const Ogre::FrameEvent& evt)
     mMouse->capture();
     CEGUI::System::getSingleton().injectTimePulse(evt.timeSinceLastFrame);
 
-
-    //mTrayMgr->frameRenderingQueued(evt);
-
-
-    /*if (!mTrayMgr->isDialogVisible())
-    {
-        mCameraMan->frameRenderingQueued(evt);   // If dialog isn't up, then update the camera
-        if (mDetailsPanel->isVisible())          // If details panel is visible, then update its contents
-        {
-            mDetailsPanel->setParamValue(0, Ogre::StringConverter::toString(mCamera->getDerivedPosition().x));
-            mDetailsPanel->setParamValue(1, Ogre::StringConverter::toString(mCamera->getDerivedPosition().y));
-            mDetailsPanel->setParamValue(2, Ogre::StringConverter::toString(mCamera->getDerivedPosition().z));
-            mDetailsPanel->setParamValue(4, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().w));
-            mDetailsPanel->setParamValue(5, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().x));
-            mDetailsPanel->setParamValue(6, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().y));
-            mDetailsPanel->setParamValue(7, Ogre::StringConverter::toString(mCamera->getDerivedOrientation().z));
+    if(timer && scoreboard){
+        if(time <= 0){
+            CEGUI::WindowManager::getSingleton().destroyWindow(scoreboard);
+            CEGUI::WindowManager::getSingleton().destroyWindow(timer);
+            timer = NULL;
+            scoreboard = NULL;
+            CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+            CEGUI::Window *endDisplay = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+            placeIntInDisplay(endDisplay, "Game over! Final Score: ", score);
+            endDisplay->setSize(CEGUI::USize(CEGUI::UDim(1, 0), CEGUI::UDim(1, 0)));
+            gui->addChild(endDisplay);
+        }
+        else{
+            placeIntInDisplay(scoreboard, "Score: ", score);
+            time -= evt.timeSinceLastFrame;
+            placeIntInDisplay(timer, "Time: ", int(time));
         }
     }
 
-    if(time <= 0){
-        if(!endDisplay){
-            endDisplay = mTrayMgr->createTextBox(OgreBites::TL_CENTER, "End Display", ("GAME OVER"), 1700, 900);
-            std::ostringstream convert;
-            convert << "YOUR FINAL SCORE WAS: \n" << score;
-            endDisplay->setText(convert.str());
-        }
-        scoreDisplay->hide();
-        timerDisplay->hide();
-    }
-    else{
-        placeIntInDisplay(scoreDisplay, score);
-
-        time -= evt.timeSinceLastFrame;
-        placeIntInDisplay(timerDisplay, time);
-    } */
-
-    game->frameRenderingQueued(evt, time);
+    if(game)
+        game->frameRenderingQueued(evt, time);
 
     return true;
 }
 //---------------------------------------------------------------------------
 void GameManager::createScene(void)
 {
+    game = NULL;
+    score = 0;
+    time = 5;
+    soundOn = true;
+    setUpLighting();
+    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+    createMenu();
+}
+
+void GameManager::createMenu(){
+    sheet = NULL;
+    gui = NULL;
+    timer = NULL;
+    scoreboard = NULL;
     mRenderer = &CEGUI::OgreRenderer::bootstrapSystem();
     CEGUI::ImageManager::setImagesetDefaultResourceGroup("Imagesets");
     CEGUI::Font::setDefaultResourceGroup("Fonts");
@@ -74,28 +72,56 @@ void GameManager::createScene(void)
 
     CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+    sheet = wmgr.createWindow("DefaultWindow", "CEGUIDemo/Sheet");
+    CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
 
-    score = 0;
-    time = 60;
-    endDisplay = 0;
-    soundOn = true;
-    setUpLighting();
-    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+    CEGUI::Window *startSinglePlayer = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    startSinglePlayer->setText("Single Player Mode");
+    startSinglePlayer->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    startSinglePlayer->setPosition(CEGUI::UVector2( CEGUI::UDim(0.425f, 0), CEGUI::UDim(0.375f, 0)));
+    
+    sheet->addChild(startSinglePlayer);
+    startSinglePlayer->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameManager::renderGame, this));
 
-    //Setup Score
-    /*scoreDisplay = mTrayMgr->createTextBox(OgreBites::TL_TOPLEFT, "Score", ("Score"), 100, 100);
-    placeIntInDisplay(scoreDisplay, score);
+    CEGUI::Window *startServer = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    startServer->setText("Create Server");
+    startServer->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    startServer->setPosition(CEGUI::UVector2( CEGUI::UDim(0.425f, 0), CEGUI::UDim(0.475f, 0)));
+    
+    sheet->addChild(startServer);
+    startServer->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameManager::renderGame, this));
 
-    timerDisplay = mTrayMgr->createTextBox(OgreBites::TL_TOPLEFT, "Timer", ("Time Left:"), 100, 100);
-    placeIntInDisplay(timerDisplay, time);*/
-
-    game = new DefaultGame();
-    game->createScene(mSceneMgr, mCamera, time, score, soundOn);
+    CEGUI::Window *startClient = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    startClient->setText("Join Server");
+    startClient->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    startClient->setPosition(CEGUI::UVector2( CEGUI::UDim(0.425f, 0), CEGUI::UDim(0.575f, 0)));
+    
+    sheet->addChild(startClient);
+    startClient->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameManager::renderGame, this));   
 }
 
-void GameManager::placeIntInDisplay(OgreBites::TextBox* display, const int num){
+void GameManager::createScoreboard()
+{
+    CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+    gui = wmgr.createWindow("DefaultWindow", "CEGUIDemo/Sheet");
+    CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(gui);
+    scoreboard = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    placeIntInDisplay(scoreboard, "Score: ", score);
+    scoreboard->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    gui->addChild(scoreboard);
+
+    timer = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    placeIntInDisplay(timer, "Time: ", time);
+    timer->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    timer->setPosition(CEGUI::UVector2( CEGUI::UDim(0, 0), CEGUI::UDim(0.05f, 0)));
+
+    gui->addChild(timer);
+}
+
+void GameManager::placeIntInDisplay(CEGUI::Window* display, std::string title, const int num){
     std::ostringstream convert;
-    convert << num;
+    convert << title << num;
     display->setText(convert.str());
 }
 
@@ -132,22 +158,7 @@ void GameManager::setUpLighting()
 bool GameManager::keyPressed( const OIS::KeyEvent &arg )
 {
 
-    /*if (mTrayMgr->isDialogVisible()) 
-        return true;   // don't process any more keys if dialog is up
-    else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
-    {
-        if (mDetailsPanel->getTrayLocation() == OgreBites::TL_NONE)
-        {
-            mTrayMgr->moveWidgetToTray(mDetailsPanel, OgreBites::TL_TOPRIGHT, 0);
-            mDetailsPanel->show();
-        }
-        else
-        {
-            mTrayMgr->removeWidgetFromTray(mDetailsPanel);
-            mDetailsPanel->hide();
-        }
-    }
-    else */if(arg.key == OIS::KC_M){
+    if(arg.key == OIS::KC_M){
         soundOn = !soundOn;
     }
     else if(arg.key == OIS::KC_F5)   // refresh all textures
@@ -159,13 +170,15 @@ bool GameManager::keyPressed( const OIS::KeyEvent &arg )
         mShutDown = true;
     }
     
-    game->keyPressed(arg);
+    if(game && time > 0)
+        game->keyPressed(arg);
     return true;
 }
 
 bool GameManager::keyReleased( const OIS::KeyEvent &arg )
 {   
-    game->keyReleased(arg);
+    if(game && time > 0)
+        game->keyReleased(arg);
     return true;
 }
 
@@ -196,6 +209,67 @@ void GameManager::createFrameListener(void)
  
     mRoot->addFrameListener(this);
 }
+
+CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID)
+{
+    switch (buttonID)
+    {
+    case OIS::MB_Left:
+        return CEGUI::LeftButton;
+ 
+    case OIS::MB_Right:
+        return CEGUI::RightButton;
+ 
+    case OIS::MB_Middle:
+        return CEGUI::MiddleButton;
+ 
+    default:
+        return CEGUI::LeftButton;
+    }
+}
+
+bool GameManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
+{
+    if(sheet)
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(convertButton(id));
+    return true;
+}
+
+bool GameManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
+{
+    if(sheet)
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(convertButton(id));
+    return true;
+}
+
+bool GameManager::mouseMoved(const OIS::MouseEvent &arg)
+{
+    if(sheet){
+        CEGUI::System &sys = CEGUI::System::getSingleton();
+        sys.getDefaultGUIContext().injectMouseMove(arg.state.X.rel, arg.state.Y.rel);
+        // Scroll wheel.
+        if (arg.state.Z.rel)
+            sys.getDefaultGUIContext().injectMouseWheelChange(arg.state.Z.rel / 120.0f);
+    }else{
+        mCameraMan->injectMouseMove(arg);
+    }
+    return true;
+}
+
+bool GameManager::renderGame(const CEGUI::EventArgs &e)
+{
+    game = new DefaultGame();
+    game->createScene(mSceneMgr, mCamera, time, score, soundOn);
+    createScoreboard();
+    if(sheet){
+        CEGUI::WindowManager::getSingleton().destroyWindow(sheet);
+        sheet = NULL;
+        CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().hide();        
+    }
+    return true;
+}
+
+
 //---------------------------------------------------------------------------
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
