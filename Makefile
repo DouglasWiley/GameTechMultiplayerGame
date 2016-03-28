@@ -79,7 +79,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = x86_64-unknown-linux-gnu
 host_triplet = x86_64-unknown-linux-gnu
-bin_PROGRAMS = assignment2$(EXEEXT)
+bin_PROGRAMS = assignment3$(EXEEXT)
 subdir = .
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
@@ -100,23 +100,24 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_assignment2_OBJECTS = assignment2-BaseApplication.$(OBJEXT) \
-	assignment2-GameManager.$(OBJEXT) \
-	assignment2-Physics.$(OBJEXT) assignment2-Room.$(OBJEXT) \
-	assignment2-MyMotionState.$(OBJEXT) assignment2-Ball.$(OBJEXT) \
-	assignment2-Paddle.$(OBJEXT)
-assignment2_OBJECTS = $(am_assignment2_OBJECTS)
+am_assignment3_OBJECTS = assignment3-NetManager.$(OBJEXT) \
+	assignment3-BaseApplication.$(OBJEXT) \
+	assignment3-GameManager.$(OBJEXT) \
+	assignment3-Physics.$(OBJEXT) assignment3-Room.$(OBJEXT) \
+	assignment3-MyMotionState.$(OBJEXT) assignment3-Ball.$(OBJEXT) \
+	assignment3-Paddle.$(OBJEXT)
+assignment3_OBJECTS = $(am_assignment3_OBJECTS)
 am__DEPENDENCIES_1 =
-assignment2_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+assignment3_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-assignment2_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(assignment2_CXXFLAGS) \
-	$(CXXFLAGS) $(assignment2_LDFLAGS) $(LDFLAGS) -o $@
+assignment3_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(assignment3_CXXFLAGS) \
+	$(CXXFLAGS) $(assignment3_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
 am__v_P_0 = false
@@ -151,8 +152,8 @@ AM_V_CXXLD = $(am__v_CXXLD_$(V))
 am__v_CXXLD_ = $(am__v_CXXLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(assignment2_SOURCES)
-DIST_SOURCES = $(assignment2_SOURCES)
+SOURCES = $(assignment3_SOURCES)
+DIST_SOURCES = $(assignment3_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -198,13 +199,13 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/missing aclocal-1.14
+ACLOCAL = ${SHELL} /v/filer4b/v38q001/doug/CS354R/p3/354r-p2/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AR = ar
-AUTOCONF = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/missing autoconf
-AUTOHEADER = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/missing autoheader
-AUTOMAKE = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/missing automake-1.14
+AUTOCONF = ${SHELL} /v/filer4b/v38q001/doug/CS354R/p3/354r-p2/missing autoconf
+AUTOHEADER = ${SHELL} /v/filer4b/v38q001/doug/CS354R/p3/354r-p2/missing autoheader
+AUTOMAKE = ${SHELL} /v/filer4b/v38q001/doug/CS354R/p3/354r-p2/missing automake-1.14
 AWK = gawk
 BULLET_CFLAGS = 
 BULLET_LIBS = 
@@ -247,7 +248,7 @@ LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIPO = 
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/missing makeinfo
+MAKEINFO = ${SHELL} /v/filer4b/v38q001/doug/CS354R/p3/354r-p2/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /bin/mkdir -p
 NM = /usr/bin/nm -B
@@ -277,10 +278,10 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = strip
 VERSION = 0.1
-abs_builddir = /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory
-abs_srcdir = /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory
-abs_top_builddir = /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory
-abs_top_srcdir = /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory
+abs_builddir = /v/filer4b/v38q001/doug/CS354R/p3/354r-p2
+abs_srcdir = /v/filer4b/v38q001/doug/CS354R/p3/354r-p2
+abs_top_builddir = /v/filer4b/v38q001/doug/CS354R/p3/354r-p2
+abs_top_srcdir = /v/filer4b/v38q001/doug/CS354R/p3/354r-p2
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
@@ -312,7 +313,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /v/filer4b/v38q001/ahall12/cs354R/p3drafts/appdirectory/install-sh
+install_sh = ${SHELL} /v/filer4b/v38q001/doug/CS354R/p3/354r-p2/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -332,12 +333,12 @@ target_alias =
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
-noinst_HEADERS = BaseApplication.h GameManager.h Game.h CollisionCallbacks.h Physics.h Room.h MyMotionState.h Ball.h Paddle.h
-assignment2_CPPFLAGS = -I$(top_srcdir)
-assignment2_SOURCES = BaseApplication.cpp GameManager.cpp Physics.cpp Room.cpp MyMotionState.cpp Ball.cpp Paddle.cpp
-assignment2_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS) $(CEGUI_CFLAGS)
-assignment2_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS) $(CEGUI_LIBS) $(CEGUI_OGRE_LIBS)
-assignment2_LDFLAGS = -lOgreOverlay -lboost_system -lSDL -lSDL_mixer
+noinst_HEADERS = BaseApplication.h GameManager.h Game.h CollisionCallbacks.h Physics.h Room.h MyMotionState.h Ball.h Paddle.h NetManager.h
+assignment3_CPPFLAGS = -I$(top_srcdir)
+assignment3_SOURCES = NetManager.cpp BaseApplication.cpp GameManager.cpp Physics.cpp Room.cpp MyMotionState.cpp Ball.cpp Paddle.cpp
+assignment3_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS) $(CEGUI_CFLAGS)
+assignment3_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS) $(CEGUI_LIBS) $(CEGUI_OGRE_LIBS)
+assignment3_LDFLAGS = -lOgreOverlay -lboost_system -lSDL -lSDL_mixer -lSDL_net
 EXTRA_DIST = buildit makeit
 AUTOMAKE_OPTIONS = foreign
 all: config.h
@@ -444,9 +445,9 @@ clean-binPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
-assignment2$(EXEEXT): $(assignment2_OBJECTS) $(assignment2_DEPENDENCIES) $(EXTRA_assignment2_DEPENDENCIES) 
-	@rm -f assignment2$(EXEEXT)
-	$(AM_V_CXXLD)$(assignment2_LINK) $(assignment2_OBJECTS) $(assignment2_LDADD) $(LIBS)
+assignment3$(EXEEXT): $(assignment3_OBJECTS) $(assignment3_DEPENDENCIES) $(EXTRA_assignment3_DEPENDENCIES) 
+	@rm -f assignment3$(EXEEXT)
+	$(AM_V_CXXLD)$(assignment3_LINK) $(assignment3_OBJECTS) $(assignment3_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -454,13 +455,14 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-include ./$(DEPDIR)/assignment2-Ball.Po
-include ./$(DEPDIR)/assignment2-BaseApplication.Po
-include ./$(DEPDIR)/assignment2-GameManager.Po
-include ./$(DEPDIR)/assignment2-MyMotionState.Po
-include ./$(DEPDIR)/assignment2-Paddle.Po
-include ./$(DEPDIR)/assignment2-Physics.Po
-include ./$(DEPDIR)/assignment2-Room.Po
+include ./$(DEPDIR)/assignment3-Ball.Po
+include ./$(DEPDIR)/assignment3-BaseApplication.Po
+include ./$(DEPDIR)/assignment3-GameManager.Po
+include ./$(DEPDIR)/assignment3-MyMotionState.Po
+include ./$(DEPDIR)/assignment3-NetManager.Po
+include ./$(DEPDIR)/assignment3-Paddle.Po
+include ./$(DEPDIR)/assignment3-Physics.Po
+include ./$(DEPDIR)/assignment3-Room.Po
 
 .cpp.o:
 	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -483,103 +485,117 @@ include ./$(DEPDIR)/assignment2-Room.Po
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(LTCXXCOMPILE) -c -o $@ $<
 
-assignment2-BaseApplication.o: BaseApplication.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-BaseApplication.o -MD -MP -MF $(DEPDIR)/assignment2-BaseApplication.Tpo -c -o assignment2-BaseApplication.o `test -f 'BaseApplication.cpp' || echo '$(srcdir)/'`BaseApplication.cpp
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-BaseApplication.Tpo $(DEPDIR)/assignment2-BaseApplication.Po
-#	$(AM_V_CXX)source='BaseApplication.cpp' object='assignment2-BaseApplication.o' libtool=no \
+assignment3-NetManager.o: NetManager.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-NetManager.o -MD -MP -MF $(DEPDIR)/assignment3-NetManager.Tpo -c -o assignment3-NetManager.o `test -f 'NetManager.cpp' || echo '$(srcdir)/'`NetManager.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-NetManager.Tpo $(DEPDIR)/assignment3-NetManager.Po
+#	$(AM_V_CXX)source='NetManager.cpp' object='assignment3-NetManager.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-BaseApplication.o `test -f 'BaseApplication.cpp' || echo '$(srcdir)/'`BaseApplication.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-NetManager.o `test -f 'NetManager.cpp' || echo '$(srcdir)/'`NetManager.cpp
 
-assignment2-BaseApplication.obj: BaseApplication.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-BaseApplication.obj -MD -MP -MF $(DEPDIR)/assignment2-BaseApplication.Tpo -c -o assignment2-BaseApplication.obj `if test -f 'BaseApplication.cpp'; then $(CYGPATH_W) 'BaseApplication.cpp'; else $(CYGPATH_W) '$(srcdir)/BaseApplication.cpp'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-BaseApplication.Tpo $(DEPDIR)/assignment2-BaseApplication.Po
-#	$(AM_V_CXX)source='BaseApplication.cpp' object='assignment2-BaseApplication.obj' libtool=no \
+assignment3-NetManager.obj: NetManager.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-NetManager.obj -MD -MP -MF $(DEPDIR)/assignment3-NetManager.Tpo -c -o assignment3-NetManager.obj `if test -f 'NetManager.cpp'; then $(CYGPATH_W) 'NetManager.cpp'; else $(CYGPATH_W) '$(srcdir)/NetManager.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-NetManager.Tpo $(DEPDIR)/assignment3-NetManager.Po
+#	$(AM_V_CXX)source='NetManager.cpp' object='assignment3-NetManager.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-BaseApplication.obj `if test -f 'BaseApplication.cpp'; then $(CYGPATH_W) 'BaseApplication.cpp'; else $(CYGPATH_W) '$(srcdir)/BaseApplication.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-NetManager.obj `if test -f 'NetManager.cpp'; then $(CYGPATH_W) 'NetManager.cpp'; else $(CYGPATH_W) '$(srcdir)/NetManager.cpp'; fi`
 
-assignment2-GameManager.o: GameManager.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-GameManager.o -MD -MP -MF $(DEPDIR)/assignment2-GameManager.Tpo -c -o assignment2-GameManager.o `test -f 'GameManager.cpp' || echo '$(srcdir)/'`GameManager.cpp
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-GameManager.Tpo $(DEPDIR)/assignment2-GameManager.Po
-#	$(AM_V_CXX)source='GameManager.cpp' object='assignment2-GameManager.o' libtool=no \
+assignment3-BaseApplication.o: BaseApplication.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-BaseApplication.o -MD -MP -MF $(DEPDIR)/assignment3-BaseApplication.Tpo -c -o assignment3-BaseApplication.o `test -f 'BaseApplication.cpp' || echo '$(srcdir)/'`BaseApplication.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-BaseApplication.Tpo $(DEPDIR)/assignment3-BaseApplication.Po
+#	$(AM_V_CXX)source='BaseApplication.cpp' object='assignment3-BaseApplication.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-GameManager.o `test -f 'GameManager.cpp' || echo '$(srcdir)/'`GameManager.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-BaseApplication.o `test -f 'BaseApplication.cpp' || echo '$(srcdir)/'`BaseApplication.cpp
 
-assignment2-GameManager.obj: GameManager.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-GameManager.obj -MD -MP -MF $(DEPDIR)/assignment2-GameManager.Tpo -c -o assignment2-GameManager.obj `if test -f 'GameManager.cpp'; then $(CYGPATH_W) 'GameManager.cpp'; else $(CYGPATH_W) '$(srcdir)/GameManager.cpp'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-GameManager.Tpo $(DEPDIR)/assignment2-GameManager.Po
-#	$(AM_V_CXX)source='GameManager.cpp' object='assignment2-GameManager.obj' libtool=no \
+assignment3-BaseApplication.obj: BaseApplication.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-BaseApplication.obj -MD -MP -MF $(DEPDIR)/assignment3-BaseApplication.Tpo -c -o assignment3-BaseApplication.obj `if test -f 'BaseApplication.cpp'; then $(CYGPATH_W) 'BaseApplication.cpp'; else $(CYGPATH_W) '$(srcdir)/BaseApplication.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-BaseApplication.Tpo $(DEPDIR)/assignment3-BaseApplication.Po
+#	$(AM_V_CXX)source='BaseApplication.cpp' object='assignment3-BaseApplication.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-GameManager.obj `if test -f 'GameManager.cpp'; then $(CYGPATH_W) 'GameManager.cpp'; else $(CYGPATH_W) '$(srcdir)/GameManager.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-BaseApplication.obj `if test -f 'BaseApplication.cpp'; then $(CYGPATH_W) 'BaseApplication.cpp'; else $(CYGPATH_W) '$(srcdir)/BaseApplication.cpp'; fi`
 
-assignment2-Physics.o: Physics.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Physics.o -MD -MP -MF $(DEPDIR)/assignment2-Physics.Tpo -c -o assignment2-Physics.o `test -f 'Physics.cpp' || echo '$(srcdir)/'`Physics.cpp
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Physics.Tpo $(DEPDIR)/assignment2-Physics.Po
-#	$(AM_V_CXX)source='Physics.cpp' object='assignment2-Physics.o' libtool=no \
+assignment3-GameManager.o: GameManager.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-GameManager.o -MD -MP -MF $(DEPDIR)/assignment3-GameManager.Tpo -c -o assignment3-GameManager.o `test -f 'GameManager.cpp' || echo '$(srcdir)/'`GameManager.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-GameManager.Tpo $(DEPDIR)/assignment3-GameManager.Po
+#	$(AM_V_CXX)source='GameManager.cpp' object='assignment3-GameManager.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Physics.o `test -f 'Physics.cpp' || echo '$(srcdir)/'`Physics.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-GameManager.o `test -f 'GameManager.cpp' || echo '$(srcdir)/'`GameManager.cpp
 
-assignment2-Physics.obj: Physics.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Physics.obj -MD -MP -MF $(DEPDIR)/assignment2-Physics.Tpo -c -o assignment2-Physics.obj `if test -f 'Physics.cpp'; then $(CYGPATH_W) 'Physics.cpp'; else $(CYGPATH_W) '$(srcdir)/Physics.cpp'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Physics.Tpo $(DEPDIR)/assignment2-Physics.Po
-#	$(AM_V_CXX)source='Physics.cpp' object='assignment2-Physics.obj' libtool=no \
+assignment3-GameManager.obj: GameManager.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-GameManager.obj -MD -MP -MF $(DEPDIR)/assignment3-GameManager.Tpo -c -o assignment3-GameManager.obj `if test -f 'GameManager.cpp'; then $(CYGPATH_W) 'GameManager.cpp'; else $(CYGPATH_W) '$(srcdir)/GameManager.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-GameManager.Tpo $(DEPDIR)/assignment3-GameManager.Po
+#	$(AM_V_CXX)source='GameManager.cpp' object='assignment3-GameManager.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Physics.obj `if test -f 'Physics.cpp'; then $(CYGPATH_W) 'Physics.cpp'; else $(CYGPATH_W) '$(srcdir)/Physics.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-GameManager.obj `if test -f 'GameManager.cpp'; then $(CYGPATH_W) 'GameManager.cpp'; else $(CYGPATH_W) '$(srcdir)/GameManager.cpp'; fi`
 
-assignment2-Room.o: Room.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Room.o -MD -MP -MF $(DEPDIR)/assignment2-Room.Tpo -c -o assignment2-Room.o `test -f 'Room.cpp' || echo '$(srcdir)/'`Room.cpp
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Room.Tpo $(DEPDIR)/assignment2-Room.Po
-#	$(AM_V_CXX)source='Room.cpp' object='assignment2-Room.o' libtool=no \
+assignment3-Physics.o: Physics.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-Physics.o -MD -MP -MF $(DEPDIR)/assignment3-Physics.Tpo -c -o assignment3-Physics.o `test -f 'Physics.cpp' || echo '$(srcdir)/'`Physics.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-Physics.Tpo $(DEPDIR)/assignment3-Physics.Po
+#	$(AM_V_CXX)source='Physics.cpp' object='assignment3-Physics.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Room.o `test -f 'Room.cpp' || echo '$(srcdir)/'`Room.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-Physics.o `test -f 'Physics.cpp' || echo '$(srcdir)/'`Physics.cpp
 
-assignment2-Room.obj: Room.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Room.obj -MD -MP -MF $(DEPDIR)/assignment2-Room.Tpo -c -o assignment2-Room.obj `if test -f 'Room.cpp'; then $(CYGPATH_W) 'Room.cpp'; else $(CYGPATH_W) '$(srcdir)/Room.cpp'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Room.Tpo $(DEPDIR)/assignment2-Room.Po
-#	$(AM_V_CXX)source='Room.cpp' object='assignment2-Room.obj' libtool=no \
+assignment3-Physics.obj: Physics.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-Physics.obj -MD -MP -MF $(DEPDIR)/assignment3-Physics.Tpo -c -o assignment3-Physics.obj `if test -f 'Physics.cpp'; then $(CYGPATH_W) 'Physics.cpp'; else $(CYGPATH_W) '$(srcdir)/Physics.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-Physics.Tpo $(DEPDIR)/assignment3-Physics.Po
+#	$(AM_V_CXX)source='Physics.cpp' object='assignment3-Physics.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Room.obj `if test -f 'Room.cpp'; then $(CYGPATH_W) 'Room.cpp'; else $(CYGPATH_W) '$(srcdir)/Room.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-Physics.obj `if test -f 'Physics.cpp'; then $(CYGPATH_W) 'Physics.cpp'; else $(CYGPATH_W) '$(srcdir)/Physics.cpp'; fi`
 
-assignment2-MyMotionState.o: MyMotionState.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-MyMotionState.o -MD -MP -MF $(DEPDIR)/assignment2-MyMotionState.Tpo -c -o assignment2-MyMotionState.o `test -f 'MyMotionState.cpp' || echo '$(srcdir)/'`MyMotionState.cpp
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-MyMotionState.Tpo $(DEPDIR)/assignment2-MyMotionState.Po
-#	$(AM_V_CXX)source='MyMotionState.cpp' object='assignment2-MyMotionState.o' libtool=no \
+assignment3-Room.o: Room.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-Room.o -MD -MP -MF $(DEPDIR)/assignment3-Room.Tpo -c -o assignment3-Room.o `test -f 'Room.cpp' || echo '$(srcdir)/'`Room.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-Room.Tpo $(DEPDIR)/assignment3-Room.Po
+#	$(AM_V_CXX)source='Room.cpp' object='assignment3-Room.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-MyMotionState.o `test -f 'MyMotionState.cpp' || echo '$(srcdir)/'`MyMotionState.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-Room.o `test -f 'Room.cpp' || echo '$(srcdir)/'`Room.cpp
 
-assignment2-MyMotionState.obj: MyMotionState.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-MyMotionState.obj -MD -MP -MF $(DEPDIR)/assignment2-MyMotionState.Tpo -c -o assignment2-MyMotionState.obj `if test -f 'MyMotionState.cpp'; then $(CYGPATH_W) 'MyMotionState.cpp'; else $(CYGPATH_W) '$(srcdir)/MyMotionState.cpp'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-MyMotionState.Tpo $(DEPDIR)/assignment2-MyMotionState.Po
-#	$(AM_V_CXX)source='MyMotionState.cpp' object='assignment2-MyMotionState.obj' libtool=no \
+assignment3-Room.obj: Room.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-Room.obj -MD -MP -MF $(DEPDIR)/assignment3-Room.Tpo -c -o assignment3-Room.obj `if test -f 'Room.cpp'; then $(CYGPATH_W) 'Room.cpp'; else $(CYGPATH_W) '$(srcdir)/Room.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-Room.Tpo $(DEPDIR)/assignment3-Room.Po
+#	$(AM_V_CXX)source='Room.cpp' object='assignment3-Room.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-MyMotionState.obj `if test -f 'MyMotionState.cpp'; then $(CYGPATH_W) 'MyMotionState.cpp'; else $(CYGPATH_W) '$(srcdir)/MyMotionState.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-Room.obj `if test -f 'Room.cpp'; then $(CYGPATH_W) 'Room.cpp'; else $(CYGPATH_W) '$(srcdir)/Room.cpp'; fi`
 
-assignment2-Ball.o: Ball.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Ball.o -MD -MP -MF $(DEPDIR)/assignment2-Ball.Tpo -c -o assignment2-Ball.o `test -f 'Ball.cpp' || echo '$(srcdir)/'`Ball.cpp
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Ball.Tpo $(DEPDIR)/assignment2-Ball.Po
-#	$(AM_V_CXX)source='Ball.cpp' object='assignment2-Ball.o' libtool=no \
+assignment3-MyMotionState.o: MyMotionState.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-MyMotionState.o -MD -MP -MF $(DEPDIR)/assignment3-MyMotionState.Tpo -c -o assignment3-MyMotionState.o `test -f 'MyMotionState.cpp' || echo '$(srcdir)/'`MyMotionState.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-MyMotionState.Tpo $(DEPDIR)/assignment3-MyMotionState.Po
+#	$(AM_V_CXX)source='MyMotionState.cpp' object='assignment3-MyMotionState.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Ball.o `test -f 'Ball.cpp' || echo '$(srcdir)/'`Ball.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-MyMotionState.o `test -f 'MyMotionState.cpp' || echo '$(srcdir)/'`MyMotionState.cpp
 
-assignment2-Ball.obj: Ball.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Ball.obj -MD -MP -MF $(DEPDIR)/assignment2-Ball.Tpo -c -o assignment2-Ball.obj `if test -f 'Ball.cpp'; then $(CYGPATH_W) 'Ball.cpp'; else $(CYGPATH_W) '$(srcdir)/Ball.cpp'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Ball.Tpo $(DEPDIR)/assignment2-Ball.Po
-#	$(AM_V_CXX)source='Ball.cpp' object='assignment2-Ball.obj' libtool=no \
+assignment3-MyMotionState.obj: MyMotionState.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-MyMotionState.obj -MD -MP -MF $(DEPDIR)/assignment3-MyMotionState.Tpo -c -o assignment3-MyMotionState.obj `if test -f 'MyMotionState.cpp'; then $(CYGPATH_W) 'MyMotionState.cpp'; else $(CYGPATH_W) '$(srcdir)/MyMotionState.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-MyMotionState.Tpo $(DEPDIR)/assignment3-MyMotionState.Po
+#	$(AM_V_CXX)source='MyMotionState.cpp' object='assignment3-MyMotionState.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Ball.obj `if test -f 'Ball.cpp'; then $(CYGPATH_W) 'Ball.cpp'; else $(CYGPATH_W) '$(srcdir)/Ball.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-MyMotionState.obj `if test -f 'MyMotionState.cpp'; then $(CYGPATH_W) 'MyMotionState.cpp'; else $(CYGPATH_W) '$(srcdir)/MyMotionState.cpp'; fi`
 
-assignment2-Paddle.o: Paddle.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Paddle.o -MD -MP -MF $(DEPDIR)/assignment2-Paddle.Tpo -c -o assignment2-Paddle.o `test -f 'Paddle.cpp' || echo '$(srcdir)/'`Paddle.cpp
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Paddle.Tpo $(DEPDIR)/assignment2-Paddle.Po
-#	$(AM_V_CXX)source='Paddle.cpp' object='assignment2-Paddle.o' libtool=no \
+assignment3-Ball.o: Ball.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-Ball.o -MD -MP -MF $(DEPDIR)/assignment3-Ball.Tpo -c -o assignment3-Ball.o `test -f 'Ball.cpp' || echo '$(srcdir)/'`Ball.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-Ball.Tpo $(DEPDIR)/assignment3-Ball.Po
+#	$(AM_V_CXX)source='Ball.cpp' object='assignment3-Ball.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Paddle.o `test -f 'Paddle.cpp' || echo '$(srcdir)/'`Paddle.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-Ball.o `test -f 'Ball.cpp' || echo '$(srcdir)/'`Ball.cpp
 
-assignment2-Paddle.obj: Paddle.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Paddle.obj -MD -MP -MF $(DEPDIR)/assignment2-Paddle.Tpo -c -o assignment2-Paddle.obj `if test -f 'Paddle.cpp'; then $(CYGPATH_W) 'Paddle.cpp'; else $(CYGPATH_W) '$(srcdir)/Paddle.cpp'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Paddle.Tpo $(DEPDIR)/assignment2-Paddle.Po
-#	$(AM_V_CXX)source='Paddle.cpp' object='assignment2-Paddle.obj' libtool=no \
+assignment3-Ball.obj: Ball.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-Ball.obj -MD -MP -MF $(DEPDIR)/assignment3-Ball.Tpo -c -o assignment3-Ball.obj `if test -f 'Ball.cpp'; then $(CYGPATH_W) 'Ball.cpp'; else $(CYGPATH_W) '$(srcdir)/Ball.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-Ball.Tpo $(DEPDIR)/assignment3-Ball.Po
+#	$(AM_V_CXX)source='Ball.cpp' object='assignment3-Ball.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Paddle.obj `if test -f 'Paddle.cpp'; then $(CYGPATH_W) 'Paddle.cpp'; else $(CYGPATH_W) '$(srcdir)/Paddle.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-Ball.obj `if test -f 'Ball.cpp'; then $(CYGPATH_W) 'Ball.cpp'; else $(CYGPATH_W) '$(srcdir)/Ball.cpp'; fi`
+
+assignment3-Paddle.o: Paddle.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-Paddle.o -MD -MP -MF $(DEPDIR)/assignment3-Paddle.Tpo -c -o assignment3-Paddle.o `test -f 'Paddle.cpp' || echo '$(srcdir)/'`Paddle.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-Paddle.Tpo $(DEPDIR)/assignment3-Paddle.Po
+#	$(AM_V_CXX)source='Paddle.cpp' object='assignment3-Paddle.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-Paddle.o `test -f 'Paddle.cpp' || echo '$(srcdir)/'`Paddle.cpp
+
+assignment3-Paddle.obj: Paddle.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-Paddle.obj -MD -MP -MF $(DEPDIR)/assignment3-Paddle.Tpo -c -o assignment3-Paddle.obj `if test -f 'Paddle.cpp'; then $(CYGPATH_W) 'Paddle.cpp'; else $(CYGPATH_W) '$(srcdir)/Paddle.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-Paddle.Tpo $(DEPDIR)/assignment3-Paddle.Po
+#	$(AM_V_CXX)source='Paddle.cpp' object='assignment3-Paddle.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-Paddle.obj `if test -f 'Paddle.cpp'; then $(CYGPATH_W) 'Paddle.cpp'; else $(CYGPATH_W) '$(srcdir)/Paddle.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

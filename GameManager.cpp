@@ -51,7 +51,7 @@ void GameManager::createScene(void)
 {
     game = NULL;
     score = 0;
-    time = 5;
+    time = 60;
     soundOn = true;
     setUpLighting();
     Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
