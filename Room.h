@@ -13,11 +13,16 @@ class Room{
 private:
 	btRigidBody* targetBody;
 	btRigidBody** wallBodyArray;
+
 public:
+	Room(Ogre::SceneManager*);
 	Room(Ogre::SceneManager*, Physics*);
 	~Room();
+	void initOgreEntity(Ogre::SceneManager*);
+	void initBulletBody(Physics*);
+	void createTargetEntity(Ogre::SceneManager*, Ogre::SceneNode*);
+	void createTargetBody(Physics*);
 	btRigidBody* CreateBulletWall(btVector3 originVector, btVector3 groundShape, Physics* physicsEngine);
-	void CreateTarget(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine, Ogre::SceneNode* wallNode);
 	btRigidBody* getTargetBody() { return targetBody; };
 	btRigidBody** getWallBodyArray() { return wallBodyArray; }
 };

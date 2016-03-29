@@ -6,25 +6,26 @@
 #include "MyMotionState.h"
 
 #define PADDLE_SCALE 4.0f
+#define DEFAULT_X 0
+#define DEFAULT_Y 750
+#define DEFAULT_Z 0
 
 class Paddle{
 
 public:
-	Paddle(Ogre::SceneManager*, Physics*);
+    Paddle(Ogre::SceneManager*, float nx = DEFAULT_X, float ny = DEFAULT_Y, float nz = DEFAULT_Z);
+	Paddle(Ogre::SceneManager*, Physics*, float nx = DEFAULT_X, float ny = DEFAULT_Y, float nz = DEFAULT_Z);
 	~Paddle();
-    Ogre::SceneNode* getNode(){
-    	return PaddleNode;
-    }
-    btRigidBody* getBody(){
-    	return body;
-    }
+    void initOgreEntity(Ogre::SceneManager*);
+    void initBulletBody(Physics*);
+    Ogre::SceneNode* getNode();
+    btRigidBody* getBody();
 
 private:
 	Ogre::SceneNode* PaddleNode;
     Ogre::Entity* PaddleEnt;
     btRigidBody* body;
-    float x, y, z;
-	
+    float x, y, z;	
 };
 
 #endif

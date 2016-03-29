@@ -1,16 +1,28 @@
 #include "Paddle.h"
 
+Paddle::Paddle(Ogre::SceneManager* mSceneMgr, float nx, float ny, float nz): body(NULL), x(nx), y(ny), z(nz){
+    initOgreEntity(mSceneMgr);
+}
 
+Paddle::Paddle(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine, float nx, float ny, float nz): x(nx), y(ny), z(nz){
+    initOgreEntity(mSceneMgr);
+    initBulletBody(physicsEngine);
+}
 
-Paddle::Paddle(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
-    x = 0;
-    y = 750;
-    z = 0;
-	btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
+Paddle::~Paddle(){
+	
+}
+
+void Paddle::initOgreEntity(Ogre::SceneManager* mSceneMgr){
     PaddleNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(x, y, z));
     PaddleEnt = mSceneMgr->createEntity("cube.mesh");
     PaddleNode->attachObject(PaddleEnt);
     PaddleNode->scale(PADDLE_SCALE, PADDLE_SCALE, PADDLE_SCALE*.1f);
+}
+
+void Paddle::initBulletBody(Physics* physicsEngine){
+    btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
+   
     btCollisionShape *newRigidShape = new btBoxShape(btVector3(PADDLE_SCALE*50, PADDLE_SCALE*50, PADDLE_SCALE*5));
     physicsEngine->getCollisionShapes().push_back(newRigidShape);
  
@@ -35,6 +47,10 @@ Paddle::Paddle(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
     body->forceActivationState(DISABLE_DEACTIVATION);
 }
 
-Paddle::~Paddle(){
-	
+Ogre::SceneNode* Paddle::getNode(){
+    return PaddleNode;
+}
+
+btRigidBody* Paddle::getBody(){
+    return body;
 }

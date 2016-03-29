@@ -1038,7 +1038,14 @@ assignment3-GameManager.o: GameManager.cpp /usr/include/stdc-predef.h \
  /usr/include/SDL/SDL_rwops.h /usr/include/SDL/SDL_error.h \
  /usr/include/SDL/SDL_audio.h /usr/include/SDL/SDL_endian.h \
  /usr/include/SDL/SDL_mutex.h /usr/include/SDL/SDL_thread.h \
- /usr/include/SDL/SDL_version.h \
+ /usr/include/SDL/SDL_version.h NetManager.h /usr/include/SDL/SDL_net.h \
+ /usr/include/SDL/SDL.h /usr/include/SDL/SDL_main.h \
+ /usr/include/SDL/SDL_cdrom.h /usr/include/SDL/SDL_cpuinfo.h \
+ /usr/include/SDL/SDL_events.h /usr/include/SDL/SDL_active.h \
+ /usr/include/SDL/SDL_keyboard.h /usr/include/SDL/SDL_keysym.h \
+ /usr/include/SDL/SDL_mouse.h /usr/include/SDL/SDL_video.h \
+ /usr/include/SDL/SDL_joystick.h /usr/include/SDL/SDL_quit.h \
+ /usr/include/SDL/SDL_loadso.h /usr/include/SDL/SDL_timer.h \
  /lusr/opt/cegui-0.8.4/include/cegui-0/CEGUI/CEGUI.h \
  /lusr/opt/cegui-0.8.4/include/cegui-0/CEGUI/Affector.h \
  /lusr/opt/cegui-0.8.4/include/cegui-0/CEGUI/String.h \
@@ -3605,6 +3612,38 @@ CollisionCallbacks.h:
 /usr/include/SDL/SDL_thread.h:
 
 /usr/include/SDL/SDL_version.h:
+
+NetManager.h:
+
+/usr/include/SDL/SDL_net.h:
+
+/usr/include/SDL/SDL.h:
+
+/usr/include/SDL/SDL_main.h:
+
+/usr/include/SDL/SDL_cdrom.h:
+
+/usr/include/SDL/SDL_cpuinfo.h:
+
+/usr/include/SDL/SDL_events.h:
+
+/usr/include/SDL/SDL_active.h:
+
+/usr/include/SDL/SDL_keyboard.h:
+
+/usr/include/SDL/SDL_keysym.h:
+
+/usr/include/SDL/SDL_mouse.h:
+
+/usr/include/SDL/SDL_video.h:
+
+/usr/include/SDL/SDL_joystick.h:
+
+/usr/include/SDL/SDL_quit.h:
+
+/usr/include/SDL/SDL_loadso.h:
+
+/usr/include/SDL/SDL_timer.h:
 
 /lusr/opt/cegui-0.8.4/include/cegui-0/CEGUI/CEGUI.h:
 

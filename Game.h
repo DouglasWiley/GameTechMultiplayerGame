@@ -9,6 +9,9 @@
 #include "btBulletDynamicsCommon.h"
 #include "CollisionCallbacks.h"
 #include "MyMotionState.h"
+#include "NetManager.h"
+
+#define HOST "mr-goodbar"
 
 class Game{
 protected:
@@ -132,6 +135,56 @@ public:
 	       body->setLinearVelocity(btVector3(0, vel.y(), vel.z()));
 	    }
 	    return true;
+    }
+};
+
+class ServerGame : public DefaultGame{
+	NetManager* netMgr;
+
+	ServerGame(){}
+	void initServer(){
+		netMgr = new NetManager();
+		netMgr->initNetManager();
+		netMgr->addNetworkInfo(PROTOCOL_TCP);
+		netMgr->startServer();
+		netMgr->acceptConnections();
+		while(!(netMgr->scanForActivity()));
+	}
+
+	virtual void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score, bool& soundOn){
+		initServer();
+		DefaultGame::createScene(mSceneMgr, mCamera, time, score, soundOn);
+	}
+	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt, float& time){
+		DefaultGame::frameRenderingQueued(evt, time);
+	}
+};
+
+class ClientGame : public Game{
+	NetManager* netMgr;	
+	
+	ClientGame(){}
+	void initClient(){
+		netMgr = new NetManager();
+		netMgr->initNetManager();
+		netMgr->addNetworkInfo(PROTOCOL_TCP, HOST, 0);
+		netMgr->startClient();
+	}
+	virtual void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score, bool& soundOn){
+		initClient();
+		//create Scene
+	}
+
+	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt, float& time){
+
+	}
+
+	virtual bool keyPressed(const OIS::KeyEvent& arg){
+
+	}
+
+    virtual bool keyReleased(const OIS::KeyEvent& arg){
+
     }
 };
 #endif

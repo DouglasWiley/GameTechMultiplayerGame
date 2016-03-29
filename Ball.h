@@ -12,17 +12,14 @@ Ogre::SceneNode* ballNode;
 btRigidBody* body;
 
 public:
+	Ball(Ogre::SceneManager*);
 	Ball(Ogre::SceneManager*, Physics*);
 	~Ball();
-	Ogre::SceneNode* getNode(){
-    	return ballNode;
-    }
-    btRigidBody* getBody(){
-    	return body;
-    }
-
-
 	
+	void initOgreEntity(Ogre::SceneManager*);
+	void initBulletBody(Physics*);
+	Ogre::SceneNode* getNode();
+	btRigidBody* getBody();
 };
 
 #endif

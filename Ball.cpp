@@ -1,9 +1,19 @@
 #include "Ball.h"
 
-
+Ball::Ball(Ogre::SceneManager* mSceneMgr): body(NULL){
+    initOgreEntity(mSceneMgr);
+}
 
 Ball::Ball(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
-	btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
+    initOgreEntity(mSceneMgr);
+    initBulletBody(physicsEngine);
+}
+
+Ball::~Ball(){
+	
+}
+
+void Ball::initOgreEntity(Ogre::SceneManager* mSceneMgr){
     Ogre::Entity* ballEnt;
     Ogre::Vector3 direction;
     Ogre::Real speed;
@@ -13,6 +23,10 @@ Ball::Ball(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
     ballNode->attachObject(ballEnt);
     ballNode->scale(BALL_SCALE, BALL_SCALE, BALL_SCALE);
     ballEnt->setCastShadows(true);
+}
+
+void Ball::initBulletBody(Physics* physicsEngine){
+    btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
     btCollisionShape *newRigidShape = new btSphereShape(BALL_SCALE*100);
     physicsEngine->getCollisionShapes().push_back(newRigidShape);
  
@@ -32,6 +46,11 @@ Ball::Ball(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
     dynamicsWorld->addRigidBody(body);
     body->setGravity(btVector3(0,-200,0));
 }
-Ball::~Ball(){
-	
+
+Ogre::SceneNode* Ball::getNode(){
+    return ballNode;
+}
+
+btRigidBody* Ball::getBody(){
+    return body;
 }
