@@ -43,6 +43,8 @@ protected:
     virtual bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
     virtual bool mouseMoved(const OIS::MouseEvent &arg);
     bool renderGame(const CEGUI::EventArgs &e);
+    bool renderGameServer(const CEGUI::EventArgs &e);
+    bool renderGameClient(const CEGUI::EventArgs &e);
 };
 
 #endif

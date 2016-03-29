@@ -90,7 +90,7 @@ void GameManager::createMenu(){
     startServer->setPosition(CEGUI::UVector2( CEGUI::UDim(0.425f, 0), CEGUI::UDim(0.475f, 0)));
     
     sheet->addChild(startServer);
-    startServer->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameManager::renderGame, this));
+    startServer->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameManager::renderGameServer, this));
 
     CEGUI::Window *startClient = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
     startClient->setText("Join Server");
@@ -98,7 +98,7 @@ void GameManager::createMenu(){
     startClient->setPosition(CEGUI::UVector2( CEGUI::UDim(0.425f, 0), CEGUI::UDim(0.575f, 0)));
     
     sheet->addChild(startClient);
-    startClient->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameManager::renderGame, this));   
+    startClient->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameManager::renderGameClient, this));   
 }
 
 void GameManager::createScoreboard()
@@ -268,6 +268,32 @@ bool GameManager::renderGame(const CEGUI::EventArgs &e)
     }
     return true;
 }
+
+bool GameManager::renderGameServer(const CEGUI::EventArgs &e){
+    game = new ServerGame();
+    if(sheet){
+        CEGUI::WindowManager::getSingleton().destroyWindow(sheet);
+        sheet = NULL;
+        CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().hide();        
+    }
+    game->createScene(mSceneMgr, mCamera, time, score, soundOn);
+    createScoreboard();
+    return true;
+}
+
+bool GameManager::renderGameClient(const CEGUI::EventArgs &e)
+{
+    game = new ClientGame();
+    game->createScene(mSceneMgr, mCamera, time, score, soundOn);
+    createScoreboard();
+    if(sheet){
+        CEGUI::WindowManager::getSingleton().destroyWindow(sheet);
+        sheet = NULL;
+        CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().hide();        
+    }
+    return true;
+} 
+
 
 
 //---------------------------------------------------------------------------

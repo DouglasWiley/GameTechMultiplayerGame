@@ -11,7 +11,7 @@
 #include "MyMotionState.h"
 #include "NetManager.h"
 
-#define HOST "mr-goodbar"
+#define HOST "dung-beetle"
 
 class Game{
 protected:
@@ -141,6 +141,7 @@ public:
 class ServerGame : public DefaultGame{
 	NetManager* netMgr;
 
+public:
 	ServerGame(){}
 	void initServer(){
 		netMgr = new NetManager();
@@ -153,6 +154,7 @@ class ServerGame : public DefaultGame{
 
 	virtual void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score, bool& soundOn){
 		initServer();
+		time = 60;
 		DefaultGame::createScene(mSceneMgr, mCamera, time, score, soundOn);
 	}
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt, float& time){
@@ -162,7 +164,7 @@ class ServerGame : public DefaultGame{
 
 class ClientGame : public Game{
 	NetManager* netMgr;	
-	
+public:
 	ClientGame(){}
 	void initClient(){
 		netMgr = new NetManager();
