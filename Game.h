@@ -22,7 +22,7 @@ protected:
 
 public:
 	Game(){}
-	virtual void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score, bool& soundOn) = 0;
+	virtual void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score, bool& soundOn){}
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt, float& time) = 0;
 	virtual bool keyPressed(const OIS::KeyEvent& arg) = 0;
     virtual bool keyReleased(const OIS::KeyEvent& arg) = 0;
@@ -66,11 +66,14 @@ public:
 
 class ClientGame : public Game{
 	NetManager* netMgr;
-	int* scorePtr;
+	int* score1ptr;
+	int* score2ptr;
+	Paddle* serverPaddle;
+
 public:
 	ClientGame();
 	void initClient();
-	virtual void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score, bool& soundOn);
+	void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score1, int& score2, bool& soundOn);
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt, float& time);
 	virtual bool keyPressed(const OIS::KeyEvent& arg);
     virtual bool keyReleased(const OIS::KeyEvent& arg);

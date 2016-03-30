@@ -10,6 +10,7 @@ void DefaultGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCame
 	physicsEngine->initObjects();
     btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
     ballRoom = new Room(mSceneMgr, physicsEngine);
+    ballRoom->createTarget(mSceneMgr, physicsEngine);
     paddle = new Paddle(mSceneMgr, physicsEngine);
     ball = new Ball(mSceneMgr, physicsEngine);
     ball->getBody()->setLinearVelocity(btVector3(200, 0, -200));
@@ -50,6 +51,7 @@ bool DefaultGame::frameRenderingQueued(const Ogre::FrameEvent& evt, float& time)
     	ball->getBody()->setLinearVelocity(btVector3(0,0,0));
     	ball->getBody()->setGravity(btVector3(0,0,0));
     }
+    return true;
 }
 
 bool DefaultGame::keyPressed(const OIS::KeyEvent& arg){
@@ -109,10 +111,19 @@ void ServerGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamer
 
 void ServerGame::messageClientPlayer(){
 	std::stringstream message;
-	message << ((int) DefaultGame::ball->getNode()->getPosition().x) << " ";
-	message << ((int) DefaultGame::ball->getNode()->getPosition().y) << " ";
-	message << ((int) DefaultGame::ball->getNode()->getPosition().z) << " ";
-	message << *score1ptr << " ";
+	message << ((int) ball->getNode()->getPosition().x) << " ";
+	message << ((int) ball->getNode()->getPosition().y) << " ";
+	message << ((int) ball->getNode()->getPosition().z) << " ";
+
+	message << ((int) paddle->getNode()->getPosition().x) << " ";
+	message << ((int) paddle->getNode()->getPosition().y) << " ";
+
+	message << ((int) paddle2->getNode()->getPosition().x) << " ";
+	message << ((int) paddle2->getNode()->getPosition().y) << " ";
+
+	message << *score1ptr << " " << *score2ptr << " ";
+
+	//add sounds
 	netMgr->messageClients(PROTOCOL_TCP, message.str().c_str(), message.str().size());
 }
 
@@ -126,12 +137,14 @@ bool ServerGame::frameRenderingQueued(const Ogre::FrameEvent& evt, float& time){
 		int key;
 		stream >> key;
 		if(command == "move")
-			paddle->move(key);
+			paddle2->move(key);
 		if(command == "stop")
-			paddle->stop(key);
+			paddle2->stop(key);
 	}
+
 	DefaultGame::frameRenderingQueued(evt, time);
 	messageClientPlayer();
+	return true;
 }
 
 void ServerGame::contactTests(){
@@ -159,11 +172,13 @@ void ClientGame::initClient(){
 	netMgr->addNetworkInfo(PROTOCOL_TCP, HOST, 0);
 	netMgr->startClient();
 }
-void ClientGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score, bool& soundOn){
+void ClientGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score1, int& score2, bool& soundOn){
 	ballRoom = new Room(mSceneMgr);
-    paddle = new Paddle(mSceneMgr);
+    paddle = new Paddle(mSceneMgr, 0, 750, 375);
+    serverPaddle = new Paddle(mSceneMgr, 0, 750, -375);
     ball = new Ball(mSceneMgr);
-    scorePtr = &score;
+    score1ptr = &score1;
+    score2ptr = &score2;
 }
 
 bool ClientGame::frameRenderingQueued(const Ogre::FrameEvent& evt, float& time){
@@ -171,16 +186,32 @@ bool ClientGame::frameRenderingQueued(const Ogre::FrameEvent& evt, float& time){
 		std::stringstream stream;
 		char* message = netMgr->tcpServerData.output;
 		stream << message;
-		int ballX;
-		int ballY;
-		int ballZ;
-		stream >> ballX;
-		stream >> ballY;
-		stream >> ballZ;
-		Ogre::SceneNode* ballNode = ball->getNode();
-		ballNode->setPosition(ballX, ballY, ballZ);
-		stream >> *scorePtr;
+
+		Ogre::Vector3 ballVec;
+		stream >> ballVec.x;
+		stream >> ballVec.y;
+		stream >> ballVec.z;
+		ball->getNode()->setPosition(ballVec);
+
+		// Move P1 or the server paddle
+		Ogre::SceneNode* paddleNode = serverPaddle->getNode();
+		Ogre::Vector3 paddleVec;
+		stream >> paddleVec.x;
+		stream >> paddleVec.y;
+		paddleVec.z = ((int) paddleNode->getPosition().z);
+		paddleNode->setPosition(paddleVec);
+
+		// Move P2 or the client paddle
+		paddleNode = paddle->getNode();
+		stream >> paddleVec.x;
+		stream >> paddleVec.y;
+		paddleVec.z = ((int) paddleNode->getPosition().z);
+		paddleNode->setPosition(paddleVec);
+
+		stream >> *score1ptr;
+		stream >> *score2ptr;
 	}
+	return true;
 }
 
 bool ClientGame::keyPressed(const OIS::KeyEvent& arg){

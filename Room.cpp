@@ -58,7 +58,8 @@ void Room::initOgreEntity(Ogre::SceneManager* mSceneMgr){
     sceneForManip = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0, WALL_SIZE/2, WALL_SIZE/2));
     sceneForManip->attachObject(walls[5]);
     sceneForManip->pitch(Ogre::Degree(-90));
-    createTargetEntity(mSceneMgr, sceneForManip);
+
+    targetWall = sceneForManip;
 
 }
 
@@ -82,8 +83,6 @@ void Room::initBulletBody(Physics* physicsEngine){
 
     //FRONT WALL
     wallBodyArray[5] = CreateBulletWall(btVector3(0, WALL_SIZE/2, WALL_SIZE/2), btVector3(btScalar(WALL_SIZE),btScalar(WALL_SIZE),btScalar(1.0)),physicsEngine);
-
-    createTargetBody(physicsEngine);
 }
 
 
@@ -124,4 +123,9 @@ void Room::createTargetBody(Physics* physicsEngine){
     float targetSize = WALL_SIZE * 0.2;
     targetBody = CreateBulletWall(btVector3(0, WALL_SIZE/2, WALL_SIZE/2 - 1), btVector3(targetSize/2, targetSize/2, 1), physicsEngine);
 
+}
+
+void Room::createTarget(Ogre::SceneManager* mSceneMgr, Physics* physicsEngine){
+    createTargetEntity(mSceneMgr, targetWall);
+    createTargetBody(physicsEngine);
 }

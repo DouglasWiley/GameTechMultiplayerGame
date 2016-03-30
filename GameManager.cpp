@@ -319,9 +319,10 @@ bool GameManager::renderGameServer(const CEGUI::EventArgs &e){
 bool GameManager::renderGameClient(const CEGUI::EventArgs &e)
 {
     destroyMenu();
-    game = new ClientGame();
-    game->createScene(mSceneMgr, mCamera, time, score, soundOn);
+    ClientGame* client = new ClientGame();
+    client->createScene(mSceneMgr, mCamera, time, score1, score2, soundOn);
     createMultiplayerScoreboard();
+    game = client;
     return true;
 }
 

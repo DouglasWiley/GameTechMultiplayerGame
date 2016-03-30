@@ -1,6 +1,6 @@
 #include "Paddle.h"
 
-Paddle::Paddle(Ogre::SceneManager* mSceneMgr, float nx, float ny, float nz): body(NULL), x(nx), y(ny), z(nz){
+Paddle::Paddle(Ogre::SceneManager* mSceneMgr, int nx, int ny, int nz): body(NULL), x(nx), y(ny), z(nz){
     initOgreEntity(mSceneMgr);
 }
 

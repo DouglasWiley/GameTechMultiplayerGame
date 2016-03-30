@@ -14,7 +14,7 @@
 class Paddle{
 
 public:
-    Paddle(Ogre::SceneManager*, float nx = DEFAULT_X, float ny = DEFAULT_Y, float nz = DEFAULT_Z);
+    Paddle(Ogre::SceneManager*, int nx = DEFAULT_X, int ny = DEFAULT_Y, int nz = DEFAULT_Z);
 	Paddle(Ogre::SceneManager*, Physics*, float nx = DEFAULT_X, float ny = DEFAULT_Y, float nz = DEFAULT_Z);
 	~Paddle();
     void initOgreEntity(Ogre::SceneManager*);
