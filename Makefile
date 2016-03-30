@@ -102,7 +102,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_assignment3_OBJECTS = assignment3-NetManager.$(OBJEXT) \
 	assignment3-BaseApplication.$(OBJEXT) \
-	assignment3-GameManager.$(OBJEXT) \
+	assignment3-Game.$(OBJEXT) assignment3-GameManager.$(OBJEXT) \
 	assignment3-Physics.$(OBJEXT) assignment3-Room.$(OBJEXT) \
 	assignment3-MyMotionState.$(OBJEXT) assignment3-Ball.$(OBJEXT) \
 	assignment3-Paddle.$(OBJEXT)
@@ -335,7 +335,7 @@ top_builddir = .
 top_srcdir = .
 noinst_HEADERS = BaseApplication.h GameManager.h Game.h CollisionCallbacks.h Physics.h Room.h MyMotionState.h Ball.h Paddle.h NetManager.h
 assignment3_CPPFLAGS = -I$(top_srcdir)
-assignment3_SOURCES = NetManager.cpp BaseApplication.cpp GameManager.cpp Physics.cpp Room.cpp MyMotionState.cpp Ball.cpp Paddle.cpp
+assignment3_SOURCES = NetManager.cpp BaseApplication.cpp Game.cpp GameManager.cpp Physics.cpp Room.cpp MyMotionState.cpp Ball.cpp Paddle.cpp
 assignment3_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS) $(CEGUI_CFLAGS)
 assignment3_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS) $(CEGUI_LIBS) $(CEGUI_OGRE_LIBS)
 assignment3_LDFLAGS = -lOgreOverlay -lboost_system -lSDL -lSDL_mixer -lSDL_net -R/lusr/lib/cegui-0.8
@@ -457,6 +457,7 @@ distclean-compile:
 
 include ./$(DEPDIR)/assignment3-Ball.Po
 include ./$(DEPDIR)/assignment3-BaseApplication.Po
+include ./$(DEPDIR)/assignment3-Game.Po
 include ./$(DEPDIR)/assignment3-GameManager.Po
 include ./$(DEPDIR)/assignment3-MyMotionState.Po
 include ./$(DEPDIR)/assignment3-NetManager.Po
@@ -512,6 +513,20 @@ assignment3-BaseApplication.obj: BaseApplication.cpp
 #	$(AM_V_CXX)source='BaseApplication.cpp' object='assignment3-BaseApplication.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-BaseApplication.obj `if test -f 'BaseApplication.cpp'; then $(CYGPATH_W) 'BaseApplication.cpp'; else $(CYGPATH_W) '$(srcdir)/BaseApplication.cpp'; fi`
+
+assignment3-Game.o: Game.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-Game.o -MD -MP -MF $(DEPDIR)/assignment3-Game.Tpo -c -o assignment3-Game.o `test -f 'Game.cpp' || echo '$(srcdir)/'`Game.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-Game.Tpo $(DEPDIR)/assignment3-Game.Po
+#	$(AM_V_CXX)source='Game.cpp' object='assignment3-Game.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-Game.o `test -f 'Game.cpp' || echo '$(srcdir)/'`Game.cpp
+
+assignment3-Game.obj: Game.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-Game.obj -MD -MP -MF $(DEPDIR)/assignment3-Game.Tpo -c -o assignment3-Game.obj `if test -f 'Game.cpp'; then $(CYGPATH_W) 'Game.cpp'; else $(CYGPATH_W) '$(srcdir)/Game.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment3-Game.Tpo $(DEPDIR)/assignment3-Game.Po
+#	$(AM_V_CXX)source='Game.cpp' object='assignment3-Game.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -c -o assignment3-Game.obj `if test -f 'Game.cpp'; then $(CYGPATH_W) 'Game.cpp'; else $(CYGPATH_W) '$(srcdir)/Game.cpp'; fi`
 
 assignment3-GameManager.o: GameManager.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment3_CPPFLAGS) $(CPPFLAGS) $(assignment3_CXXFLAGS) $(CXXFLAGS) -MT assignment3-GameManager.o -MD -MP -MF $(DEPDIR)/assignment3-GameManager.Tpo -c -o assignment3-GameManager.o `test -f 'GameManager.cpp' || echo '$(srcdir)/'`GameManager.cpp
