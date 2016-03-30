@@ -20,17 +20,27 @@ public:
 private:
   Game* game;
   CEGUI::OgreRenderer* mRenderer;
-  CEGUI::Window *sheet;
+  CEGUI::Window *menu;
   CEGUI::Window *gui;
   CEGUI::Window *scoreboard;
+  CEGUI::Window *scoreboard2;
   CEGUI::Window *timer;
 
   int score;
+  int score1;
+  int score2;
   float time;
   bool soundOn;
+  bool multiplayer;
+
   void placeIntInDisplay(CEGUI::Window* display, std::string title, const int num);
   void createMenu();
   void createScoreboard();
+  void createMultiplayerScoreboard();
+  void destroyMenu();
+  bool renderGame(const CEGUI::EventArgs &e);
+  bool renderGameServer(const CEGUI::EventArgs &e);
+  bool renderGameClient(const CEGUI::EventArgs &e);
 
 protected:
     virtual void createScene(void);
@@ -42,9 +52,6 @@ protected:
     virtual bool mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
     virtual bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
     virtual bool mouseMoved(const OIS::MouseEvent &arg);
-    bool renderGame(const CEGUI::EventArgs &e);
-    bool renderGameServer(const CEGUI::EventArgs &e);
-    bool renderGameClient(const CEGUI::EventArgs &e);
 };
 
 #endif

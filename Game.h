@@ -12,7 +12,7 @@
 #include "NetManager.h"
 #include <sstream>
 
-#define HOST "dung-beetle"
+#define HOST "airheads"
 
 class Game{
 protected:
@@ -42,19 +42,26 @@ public:
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt, float& time);
 	virtual bool keyPressed(const OIS::KeyEvent& arg);
     virtual bool keyReleased(const OIS::KeyEvent& arg);
+    virtual void contactTests();
 };
 
 
 class ServerGame : public DefaultGame{
 	NetManager* netMgr;
-	int* scorePtr;
-	
+
+	MyContactResultCallback* p1Callback;
+	MyContactResultCallback* p2Callback;
+	Paddle* paddle2;
+	int* score1ptr;
+	int* score2ptr;
+
 public:
 	ServerGame();
 	void initServer();
-	virtual void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score, bool& soundOn);
+	void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score1, int& score2, bool& soundOn);
 	virtual void messageClientPlayer();
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt, float& time);
+	virtual void contactTests();
 };
 
 class ClientGame : public Game{

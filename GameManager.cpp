@@ -1,6 +1,6 @@
 #include "GameManager.h"
 //---------------------------------------------------------------------------
-GameManager::GameManager(void) : game(NULL), mRenderer(NULL), sheet(NULL), gui(NULL), scoreboard(NULL), timer(NULL)
+GameManager::GameManager(void) : game(NULL), mRenderer(NULL), menu(NULL), gui(NULL), scoreboard(NULL), scoreboard2(NULL), timer(NULL)
 {
 }
 //---------------------------------------------------------------------------
@@ -27,6 +27,10 @@ bool GameManager::frameRenderingQueued(const Ogre::FrameEvent& evt)
             CEGUI::WindowManager::getSingleton().destroyWindow(timer);
             timer = NULL;
             scoreboard = NULL;
+            if(multiplayer){
+                CEGUI::WindowManager::getSingleton().destroyWindow(scoreboard2);
+                scoreboard2 = NULL;
+            }
             CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
             CEGUI::Window *endDisplay = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
             placeIntInDisplay(endDisplay, "Game over! Final Score: ", score);
@@ -34,7 +38,13 @@ bool GameManager::frameRenderingQueued(const Ogre::FrameEvent& evt)
             gui->addChild(endDisplay);
         }
         else{
-            placeIntInDisplay(scoreboard, "Score: ", score);
+            if(multiplayer){
+                placeIntInDisplay(scoreboard, "P1 Score: ", score1);
+                placeIntInDisplay(scoreboard2, "P2 Score: ", score2);
+            }else{
+                placeIntInDisplay(scoreboard, "Score: ", score);
+            }
+
             if(evt.timeSinceLastFrame < 1)
                 time -= evt.timeSinceLastFrame;
 
@@ -51,6 +61,8 @@ bool GameManager::frameRenderingQueued(const Ogre::FrameEvent& evt)
 void GameManager::createScene(void)
 {
     score = 0;
+    score1 = 0;
+    score2 = 0;
     time = 60;
     soundOn = true;
     setUpLighting();
@@ -59,7 +71,7 @@ void GameManager::createScene(void)
 }
 
 void GameManager::createMenu(){
-    sheet = NULL;
+    menu = NULL;
     gui = NULL;
     timer = NULL;
     scoreboard = NULL;
@@ -73,15 +85,15 @@ void GameManager::createMenu(){
     CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
-    sheet = wmgr.createWindow("DefaultWindow", "CEGUIDemo/Sheet");
-    CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
+    menu = wmgr.createWindow("DefaultWindow", "CEGUIDemo/Sheet");
+    CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(menu);
 
     CEGUI::Window *startSinglePlayer = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
     startSinglePlayer->setText("Single Player Mode");
     startSinglePlayer->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
     startSinglePlayer->setPosition(CEGUI::UVector2( CEGUI::UDim(0.425f, 0), CEGUI::UDim(0.375f, 0)));
     
-    sheet->addChild(startSinglePlayer);
+    menu->addChild(startSinglePlayer);
     startSinglePlayer->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameManager::renderGame, this));
 
     CEGUI::Window *startServer = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
@@ -89,7 +101,7 @@ void GameManager::createMenu(){
     startServer->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
     startServer->setPosition(CEGUI::UVector2( CEGUI::UDim(0.425f, 0), CEGUI::UDim(0.475f, 0)));
     
-    sheet->addChild(startServer);
+    menu->addChild(startServer);
     startServer->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameManager::renderGameServer, this));
 
     CEGUI::Window *startClient = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
@@ -97,7 +109,7 @@ void GameManager::createMenu(){
     startClient->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
     startClient->setPosition(CEGUI::UVector2( CEGUI::UDim(0.425f, 0), CEGUI::UDim(0.575f, 0)));
     
-    sheet->addChild(startClient);
+    menu->addChild(startClient);
     startClient->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameManager::renderGameClient, this));   
 }
 
@@ -118,6 +130,34 @@ void GameManager::createScoreboard()
 
     std::cout << "duringCreateScoreboard" << std::endl;
     gui->addChild(timer);
+
+    multiplayer = false;
+}
+
+void GameManager::createMultiplayerScoreboard()
+{
+    CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+    gui = wmgr.createWindow("DefaultWindow", "CEGUIDemo/Sheet");
+    CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(gui);
+    scoreboard = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    placeIntInDisplay(scoreboard, "P1 Score: ", score1);
+    scoreboard->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    gui->addChild(scoreboard);
+
+
+    timer = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    placeIntInDisplay(timer, "Time: ", time);
+    timer->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    timer->setPosition(CEGUI::UVector2( CEGUI::UDim(0, 0), CEGUI::UDim(0.05f, 0)));
+    gui->addChild(timer);
+
+    scoreboard2 = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    placeIntInDisplay(scoreboard2, "P2 Score: ", score2);
+    scoreboard2->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    scoreboard2->setPosition(CEGUI::UVector2( CEGUI::UDim(0.85f, 0), CEGUI::UDim(0, 0)));
+    gui->addChild(scoreboard2);
+
+    multiplayer = true;
 
 }
 
@@ -232,21 +272,21 @@ CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID)
 
 bool GameManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
-    if(sheet)
+    if(menu)
         CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(convertButton(id));
     return true;
 }
 
 bool GameManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
-    if(sheet)
+    if(menu)
         CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(convertButton(id));
     return true;
 }
 
 bool GameManager::mouseMoved(const OIS::MouseEvent &arg)
 {
-    if(sheet){
+    if(menu){
         CEGUI::System &sys = CEGUI::System::getSingleton();
         sys.getDefaultGUIContext().injectMouseMove(arg.state.X.rel, arg.state.Y.rel);
         // Scroll wheel.
@@ -260,42 +300,38 @@ bool GameManager::mouseMoved(const OIS::MouseEvent &arg)
 
 bool GameManager::renderGame(const CEGUI::EventArgs &e)
 {
+    destroyMenu();
     game = new DefaultGame();
     game->createScene(mSceneMgr, mCamera, time, score, soundOn);
     createScoreboard();
-    if(sheet){
-        CEGUI::WindowManager::getSingleton().destroyWindow(sheet);
-        sheet = NULL;
-        CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().hide();        
-    }
     return true;
 }
 
 bool GameManager::renderGameServer(const CEGUI::EventArgs &e){
-    game = new ServerGame();
-    if(sheet){
-        CEGUI::WindowManager::getSingleton().destroyWindow(sheet);
-        sheet = NULL;
-        CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().hide();        
-    }
-    timer = NULL;
-    game->createScene(mSceneMgr, mCamera, time, score, soundOn);
-    createScoreboard();
+    destroyMenu();
+    ServerGame* server = new ServerGame();
+    server->createScene(mSceneMgr, mCamera, time, score1, score2, soundOn);
+    createMultiplayerScoreboard();
+    game = server;
     return true;
 }
 
 bool GameManager::renderGameClient(const CEGUI::EventArgs &e)
 {
+    destroyMenu();
     game = new ClientGame();
     game->createScene(mSceneMgr, mCamera, time, score, soundOn);
-    createScoreboard();
-    if(sheet){
-        CEGUI::WindowManager::getSingleton().destroyWindow(sheet);
-        sheet = NULL;
+    createMultiplayerScoreboard();
+    return true;
+}
+
+void GameManager::destroyMenu(){
+    if(menu){
+        CEGUI::WindowManager::getSingleton().destroyWindow(menu);
+        menu = NULL;
         CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().hide();        
     }
-    return true;
-} 
+}
 
 
 

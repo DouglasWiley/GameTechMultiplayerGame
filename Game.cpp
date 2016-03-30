@@ -21,17 +21,9 @@ void DefaultGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCame
 }
 
 bool DefaultGame::frameRenderingQueued(const Ogre::FrameEvent& evt, float& time){
+	physicsEngine->getDynamicsWorld()->stepSimulation(evt.timeSinceLastFrame, 60);
+	contactTests();
 	btRigidBody* body =  ball->getBody();
-    physicsEngine->getDynamicsWorld()->stepSimulation(evt.timeSinceLastFrame, 60);
-
-    physicsEngine->getDynamicsWorld()->contactPairTest(body, ballRoom->getTargetBody(), *targetCallback);
-    physicsEngine->getDynamicsWorld()->contactPairTest(body, paddle->getBody(), *paddleCallback);
-
-    btRigidBody** wallBTArray = ballRoom->getWallBodyArray();
-    for(int i = 0; i < NUM_WALLS; i++){
-        physicsEngine->getDynamicsWorld()->contactPairTest(body, wallBTArray[i], *wallCallback);
-    }
-
     float newx, newy, newz;
     btRigidBody* paddleBody =  paddle->getBody();
     btVector3 vel = body->getLinearVelocity();
@@ -70,6 +62,15 @@ bool DefaultGame::keyReleased(const OIS::KeyEvent& arg){
     return true;
 }
 
+void DefaultGame::contactTests(){
+	btRigidBody* body =  ball->getBody();
+	physicsEngine->getDynamicsWorld()->contactPairTest(body, ballRoom->getTargetBody(), *targetCallback);
+    physicsEngine->getDynamicsWorld()->contactPairTest(body, paddle->getBody(), *paddleCallback);
+    btRigidBody** wallBTArray = ballRoom->getWallBodyArray();
+    for(int i = 0; i < NUM_WALLS; i++){
+        physicsEngine->getDynamicsWorld()->contactPairTest(body, wallBTArray[i], *wallCallback);
+    }
+}
 
 
 
@@ -87,9 +88,23 @@ void ServerGame::initServer(){
 	while(!(netMgr->scanForActivity()));
 }
 
-void ServerGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score, bool& soundOn){
-	scorePtr = &score;
-	DefaultGame::createScene(mSceneMgr, mCamera, time, score, soundOn);
+void ServerGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score1, int& score2, bool& soundOn){
+	time = 60;
+	score1ptr = &score1;
+	score2ptr = &score2;
+	physicsEngine = new Physics();
+	physicsEngine->initObjects();
+    btDiscreteDynamicsWorld* dynamicsWorld = physicsEngine->getDynamicsWorld();
+    ballRoom = new Room(mSceneMgr, physicsEngine);
+    paddle = new Paddle(mSceneMgr, physicsEngine, 0, 750, -375);
+    paddle2 = new Paddle(mSceneMgr, physicsEngine, 0, 750, 375);
+    ball = new Ball(mSceneMgr, physicsEngine);
+    ball->getBody()->setLinearVelocity(btVector3(200, 0, -200));
+    paddle->getNode()->createChildSceneNode(Ogre::Vector3(0, 0,0))->attachObject(mCamera);
+   	p1Callback = new MyContactResultCallback(&score1, &time, &soundOn);
+   	p2Callback = new MyContactResultCallback(&score2, &time, &soundOn);
+    paddleCallback = new MyCollisionCallback(&time, (char*) "music/ballHittingPaddle.wav", &soundOn);
+    wallCallback = new MyCollisionCallback(&time, (char*) "music/ballHittingWall.wav", &soundOn);
 }
 
 void ServerGame::messageClientPlayer(){
@@ -97,7 +112,7 @@ void ServerGame::messageClientPlayer(){
 	message << ((int) DefaultGame::ball->getNode()->getPosition().x) << " ";
 	message << ((int) DefaultGame::ball->getNode()->getPosition().y) << " ";
 	message << ((int) DefaultGame::ball->getNode()->getPosition().z) << " ";
-	message << *scorePtr << " ";
+	message << *score1ptr << " ";
 	netMgr->messageClients(PROTOCOL_TCP, message.str().c_str(), message.str().size());
 }
 
@@ -119,6 +134,18 @@ bool ServerGame::frameRenderingQueued(const Ogre::FrameEvent& evt, float& time){
 	messageClientPlayer();
 }
 
+void ServerGame::contactTests(){
+	btRigidBody* body =  ball->getBody();
+	physicsEngine->getDynamicsWorld()->contactPairTest(body, ballRoom->getWallBodyArray()[5], *p1Callback);
+    physicsEngine->getDynamicsWorld()->contactPairTest(body, ballRoom->getWallBodyArray()[4], *p2Callback);
+    physicsEngine->getDynamicsWorld()->contactPairTest(body, paddle->getBody(), *paddleCallback);
+    physicsEngine->getDynamicsWorld()->contactPairTest(body, paddle2->getBody(), *paddleCallback);
+
+    btRigidBody** wallBTArray = ballRoom->getWallBodyArray();
+    for(int i = 0; i < NUM_WALLS; i++){
+        physicsEngine->getDynamicsWorld()->contactPairTest(body, wallBTArray[i], *wallCallback);
+    }
+ }
 
 
 
