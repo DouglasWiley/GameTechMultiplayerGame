@@ -54,3 +54,39 @@ Ogre::SceneNode* Paddle::getNode(){
 btRigidBody* Paddle::getBody(){
     return body;
 }
+
+void Paddle::move(int key){
+    if (key == OIS::KC_S)
+    {
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(vel.x(), -400, vel.z()));
+    }
+    else if (key == OIS::KC_W)
+    {
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(vel.x(), 400, vel.z()));
+    }
+    else if (key == OIS::KC_A)
+    {
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(400, vel.y(), vel.z()));
+    }
+    else if (key == OIS::KC_D)
+    {
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(-400, vel.y(), vel.z()));
+    }
+}
+
+void Paddle::stop(int key){
+    if (key == OIS::KC_W || key == OIS::KC_S)
+    {
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(vel.x(), 0, vel.z()));
+    }
+    else if (key == OIS::KC_A||key == OIS::KC_D)
+    {
+       btVector3 vel = body->getLinearVelocity();
+       body->setLinearVelocity(btVector3(0, vel.y(), vel.z()));
+    }
+}

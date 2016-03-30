@@ -1,8 +1,7 @@
 #include "GameManager.h"
 //---------------------------------------------------------------------------
-GameManager::GameManager(void)
+GameManager::GameManager(void) : game(NULL), mRenderer(NULL), sheet(NULL), gui(NULL), scoreboard(NULL), timer(NULL)
 {
-
 }
 //---------------------------------------------------------------------------
 GameManager::~GameManager(void)
@@ -36,7 +35,9 @@ bool GameManager::frameRenderingQueued(const Ogre::FrameEvent& evt)
         }
         else{
             placeIntInDisplay(scoreboard, "Score: ", score);
-            time -= evt.timeSinceLastFrame;
+            if(evt.timeSinceLastFrame < 1)
+                time -= evt.timeSinceLastFrame;
+
             placeIntInDisplay(timer, "Time: ", int(time));
         }
     }
@@ -49,7 +50,6 @@ bool GameManager::frameRenderingQueued(const Ogre::FrameEvent& evt)
 //---------------------------------------------------------------------------
 void GameManager::createScene(void)
 {
-    game = NULL;
     score = 0;
     time = 60;
     soundOn = true;
@@ -116,7 +116,9 @@ void GameManager::createScoreboard()
     timer->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
     timer->setPosition(CEGUI::UVector2( CEGUI::UDim(0, 0), CEGUI::UDim(0.05f, 0)));
 
+    std::cout << "duringCreateScoreboard" << std::endl;
     gui->addChild(timer);
+
 }
 
 void GameManager::placeIntInDisplay(CEGUI::Window* display, std::string title, const int num){
@@ -276,6 +278,7 @@ bool GameManager::renderGameServer(const CEGUI::EventArgs &e){
         sheet = NULL;
         CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().hide();        
     }
+    timer = NULL;
     game->createScene(mSceneMgr, mCamera, time, score, soundOn);
     createScoreboard();
     return true;

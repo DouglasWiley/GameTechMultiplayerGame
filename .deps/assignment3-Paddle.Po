@@ -976,7 +976,14 @@ assignment3-Paddle.o: Paddle.cpp /usr/include/stdc-predef.h Paddle.h \
  /lusr/opt/ogre-1.9/include/OGRE/OgreShadowCameraSetupLiSPSM.h \
  /lusr/opt/ogre-1.9/include/OGRE/OgreShadowCameraSetupPlaneOptimal.h \
  /lusr/opt/ogre-1.9/include/OGRE/OgreShadowCameraSetupPSSM.h \
- MyMotionState.h
+ /usr/include/ois/OIS.h /usr/include/ois/OISPrereqs.h \
+ /usr/include/ois/OISConfig.h /usr/include/ois/OISObject.h \
+ /usr/include/ois/OISInterface.h /usr/include/ois/OISMouse.h \
+ /usr/include/ois/OISEvents.h /usr/include/ois/OISKeyboard.h \
+ /usr/include/ois/OISJoyStick.h /usr/include/ois/OISMultiTouch.h \
+ /usr/include/ois/OISInputManager.h /usr/include/ois/OISFactoryCreator.h \
+ /usr/include/ois/OISException.h /usr/include/ois/OISEffect.h \
+ /usr/include/ois/OISForceFeedback.h MyMotionState.h
 
 /usr/include/stdc-predef.h:
 
@@ -3109,5 +3116,35 @@ Physics.h:
 /lusr/opt/ogre-1.9/include/OGRE/OgreShadowCameraSetupPlaneOptimal.h:
 
 /lusr/opt/ogre-1.9/include/OGRE/OgreShadowCameraSetupPSSM.h:
+
+/usr/include/ois/OIS.h:
+
+/usr/include/ois/OISPrereqs.h:
+
+/usr/include/ois/OISConfig.h:
+
+/usr/include/ois/OISObject.h:
+
+/usr/include/ois/OISInterface.h:
+
+/usr/include/ois/OISMouse.h:
+
+/usr/include/ois/OISEvents.h:
+
+/usr/include/ois/OISKeyboard.h:
+
+/usr/include/ois/OISJoyStick.h:
+
+/usr/include/ois/OISMultiTouch.h:
+
+/usr/include/ois/OISInputManager.h:
+
+/usr/include/ois/OISFactoryCreator.h:
+
+/usr/include/ois/OISException.h:
+
+/usr/include/ois/OISEffect.h:
+
+/usr/include/ois/OISForceFeedback.h:
 
 MyMotionState.h:

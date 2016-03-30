@@ -10,6 +10,7 @@
 #include "CollisionCallbacks.h"
 #include "MyMotionState.h"
 #include "NetManager.h"
+#include <sstream>
 
 #define HOST "dung-beetle"
 
@@ -94,53 +95,19 @@ public:
 	}
 
 	virtual bool keyPressed(const OIS::KeyEvent& arg){
-		if (arg.key == OIS::KC_S)
-	    {
-	       btRigidBody* body =  paddle->getBody();
-	       btVector3 vel = body->getLinearVelocity();
-	       body->setLinearVelocity(btVector3(vel.x(), -400, vel.z()));
-	    }
-	    else if (arg.key == OIS::KC_W)
-	    {
-	        btRigidBody* body =  paddle->getBody();
-	       btVector3 vel = body->getLinearVelocity();
-	       body->setLinearVelocity(btVector3(vel.x(), 400, vel.z()));
-	    }
-	    else if (arg.key == OIS::KC_A)
-	    {
-	    btRigidBody* body =  paddle->getBody();
-	       btVector3 vel = body->getLinearVelocity();
-	       body->setLinearVelocity(btVector3(400, vel.y(), vel.z()));
-	    }
-	    else if (arg.key == OIS::KC_D)
-	    {
-	        btRigidBody* body =  paddle->getBody();
-	       btVector3 vel = body->getLinearVelocity();
-	       body->setLinearVelocity(btVector3(-400, vel.y(), vel.z()));
-	    }
+		paddle->move(arg.key);
 	    return true;
 	}
 
     virtual bool keyReleased(const OIS::KeyEvent& arg){
-	   	if (arg.key == OIS::KC_W || arg.key == OIS::KC_S)
-	    {
-	       btRigidBody* body =  paddle->getBody();
-	       btVector3 vel = body->getLinearVelocity();
-	       body->setLinearVelocity(btVector3(vel.x(), 0, vel.z()));
-	    }
-	    else if (arg.key == OIS::KC_A||arg.key == OIS::KC_D)
-	    {
-	        btRigidBody* body =  paddle->getBody();
-	       btVector3 vel = body->getLinearVelocity();
-	       body->setLinearVelocity(btVector3(0, vel.y(), vel.z()));
-	    }
+	   	paddle->stop(arg.key);
 	    return true;
     }
 };
 
 class ServerGame : public DefaultGame{
 	NetManager* netMgr;
-
+	int* scorePtr;
 public:
 	ServerGame(){}
 	void initServer(){
@@ -154,16 +121,41 @@ public:
 
 	virtual void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score, bool& soundOn){
 		initServer();
-		time = 60;
+		scorePtr = &score;
 		DefaultGame::createScene(mSceneMgr, mCamera, time, score, soundOn);
 	}
+
+	virtual void messageClientPlayer(){
+		std::stringstream message;
+		message << ((int) DefaultGame::ball->getNode()->getPosition().x) << " ";
+		message << ((int) DefaultGame::ball->getNode()->getPosition().y) << " ";
+		message << ((int) DefaultGame::ball->getNode()->getPosition().z) << " ";
+		message << *scorePtr << " ";
+		netMgr->messageClients(PROTOCOL_TCP, message.str().c_str(), message.str().size());
+	}
+
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt, float& time){
+		if(netMgr->scanForActivity()){
+			std::stringstream stream;
+			std::string command;
+			char* message = netMgr->tcpClientData[0]->output;
+			stream << message;
+			stream >> command;
+			int key;
+			stream >> key;
+			if(command == "move")
+				paddle->move(key);
+			if(command == "stop")
+				paddle->stop(key);
+		}
 		DefaultGame::frameRenderingQueued(evt, time);
+		messageClientPlayer();
 	}
 };
 
 class ClientGame : public Game{
-	NetManager* netMgr;	
+	NetManager* netMgr;
+	int* scorePtr;
 public:
 	ClientGame(){}
 	void initClient(){
@@ -174,19 +166,39 @@ public:
 	}
 	virtual void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score, bool& soundOn){
 		initClient();
-		//create Scene
+		ballRoom = new Room(mSceneMgr);
+	    paddle = new Paddle(mSceneMgr);
+	    ball = new Ball(mSceneMgr);
+	    scorePtr = &score;
 	}
 
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt, float& time){
-
+		if(netMgr->scanForActivity()){
+			std::stringstream stream;
+			char* message = netMgr->tcpServerData.output;
+			stream << message;
+			int ballX;
+			int ballY;
+			int ballZ;
+			stream >> ballX;
+			stream >> ballY;
+			stream >> ballZ;
+			Ogre::SceneNode* ballNode = ball->getNode();
+			ballNode->setPosition(ballX, ballY, ballZ);
+			stream >> *scorePtr;
+		}
 	}
 
 	virtual bool keyPressed(const OIS::KeyEvent& arg){
-
+	    	std::stringstream message;
+	    	message << "move " << arg.key;
+	      	netMgr->messageServer(PROTOCOL_TCP, message.str().c_str(), message.str().size());
 	}
 
     virtual bool keyReleased(const OIS::KeyEvent& arg){
-
+    		std::stringstream message;
+    		message << "stop " << arg.key;
+	      	netMgr->messageServer(PROTOCOL_TCP, message.str().c_str(), message.str().size());
     }
 };
 #endif

@@ -3,6 +3,7 @@
 
 #include "Physics.h"
 #include <Ogre.h>
+#include "OIS.h"
 #include "MyMotionState.h"
 
 #define PADDLE_SCALE 4.0f
@@ -18,6 +19,8 @@ public:
 	~Paddle();
     void initOgreEntity(Ogre::SceneManager*);
     void initBulletBody(Physics*);
+    void move(int);
+    void stop(int);
     Ogre::SceneNode* getNode();
     btRigidBody* getBody();
 
