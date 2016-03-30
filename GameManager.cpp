@@ -33,7 +33,17 @@ bool GameManager::frameRenderingQueued(const Ogre::FrameEvent& evt)
             }
             CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
             CEGUI::Window *endDisplay = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
-            placeIntInDisplay(endDisplay, "Game over! Final Score: ", score);
+            if(multiplayer){
+                if(score1 >  score2){
+                    placeScores(endDisplay, "Player 1 Wins! Final Scores: ", score1, score2);
+                }else if (score2 > score1){
+                    placeScores(endDisplay, "Player 2 Wins! Final Scores: ", score1, score2);
+                }else{
+                    placeScores(endDisplay, "It's a Tie! Final Scores: ", score1, score2);
+                }
+            }else{
+                placeIntInDisplay(endDisplay, "Game over! Final Score: ", score);
+            }
             endDisplay->setSize(CEGUI::USize(CEGUI::UDim(1, 0), CEGUI::UDim(1, 0)));
             gui->addChild(endDisplay);
         }
@@ -164,6 +174,12 @@ void GameManager::createMultiplayerScoreboard()
 void GameManager::placeIntInDisplay(CEGUI::Window* display, std::string title, const int num){
     std::ostringstream convert;
     convert << title << num;
+    display->setText(convert.str());
+}
+
+void GameManager::placeScores(CEGUI::Window* display, std::string title, const int num1, const int num2){
+    std::ostringstream convert;
+    convert << title << num1 << " to " << num2;
     display->setText(convert.str());
 }
 

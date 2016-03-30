@@ -34,6 +34,7 @@ private:
   bool multiplayer;
 
   void placeIntInDisplay(CEGUI::Window* display, std::string title, const int num);
+  void placeScores(CEGUI::Window* display, std::string title, const int num1, const int num2);
   void createMenu();
   void createScoreboard();
   void createMultiplayerScoreboard();

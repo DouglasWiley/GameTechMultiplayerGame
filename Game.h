@@ -51,7 +51,7 @@ class ServerGame : public DefaultGame{
 
 	MyContactResultCallback* p1Callback;
 	MyContactResultCallback* p2Callback;
-	Paddle* paddle2;
+	Paddle* paddle2; //client paddle
 	int* score1ptr;
 	int* score2ptr;
 

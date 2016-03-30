@@ -177,6 +177,7 @@ void ClientGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamer
     paddle = new Paddle(mSceneMgr, 0, 750, 375);
     serverPaddle = new Paddle(mSceneMgr, 0, 750, -375);
     ball = new Ball(mSceneMgr);
+    paddle->getNode()->createChildSceneNode(Ogre::Vector3(0, 0,0))->attachObject(mCamera);
     score1ptr = &score1;
     score2ptr = &score2;
 }
