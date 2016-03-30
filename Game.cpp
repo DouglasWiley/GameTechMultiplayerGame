@@ -74,20 +74,18 @@ void DefaultGame::contactTests(){
     }
 }
 
-
-
-
-ServerGame::ServerGame(){
-	initServer();
-}
-
-void ServerGame::initServer(){
+bool ServerGame::initServer(OIS::Keyboard* keyboard){
 	netMgr = new NetManager();
 	netMgr->initNetManager();
 	netMgr->addNetworkInfo(PROTOCOL_TCP);
 	netMgr->startServer();
 	netMgr->acceptConnections();
-	while(!(netMgr->scanForActivity()));
+	while(!(netMgr->scanForActivity())){
+        keyboard->capture();
+        if(keyboard->isKeyDown(OIS::KC_ESCAPE))
+            return false;
+    }
+    return true;
 }
 
 void ServerGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score1, int& score2, bool& soundOn){
@@ -162,18 +160,22 @@ void ServerGame::contactTests(){
     }
  }
 
-
-
-ClientGame::ClientGame(){
-	initClient();
+ClientGame::~ClientGame(){
+    delete netMgr;
 }
 
-void ClientGame::initClient(){
+bool ClientGame::initClient(){
 	netMgr = new NetManager();
 	netMgr->initNetManager();
-	netMgr->addNetworkInfo(PROTOCOL_TCP, HOST, 0);
-	netMgr->startClient();
+    netMgr->addNetworkInfo(PROTOCOL_TCP);
+    return true;
 }
+
+bool ClientGame::connectToHost(std::string hostname){
+    netMgr->setHost(hostname.c_str());
+    return netMgr->startClient();
+}
+
 void ClientGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score1, int& score2, bool& soundOn){
 	ballRoom = new Room(mSceneMgr);
     paddle = new Paddle(mSceneMgr, 0, 750, 375);

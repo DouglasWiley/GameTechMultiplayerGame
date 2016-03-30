@@ -21,6 +21,8 @@ private:
   Game* game;
   CEGUI::OgreRenderer* mRenderer;
   CEGUI::Window *menu;
+  CEGUI::Window *editboxDialogue;
+  CEGUI::Window *editbox;
   CEGUI::Window *gui;
   CEGUI::Window *scoreboard;
   CEGUI::Window *scoreboard2;
@@ -39,6 +41,7 @@ private:
   void createScoreboard();
   void createMultiplayerScoreboard();
   void destroyMenu();
+  bool enteredHostName(const CEGUI::EventArgs &e);
   bool renderGame(const CEGUI::EventArgs &e);
   bool renderGameServer(const CEGUI::EventArgs &e);
   bool renderGameClient(const CEGUI::EventArgs &e);

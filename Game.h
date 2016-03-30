@@ -11,8 +11,10 @@
 #include "MyMotionState.h"
 #include "NetManager.h"
 #include <sstream>
+#include <string>
+#include "OISKeyboard.h"
 
-#define HOST "airheads"
+#define HOST "baby-ruth"
 
 class Game{
 protected:
@@ -56,8 +58,8 @@ class ServerGame : public DefaultGame{
 	int* score2ptr;
 
 public:
-	ServerGame();
-	void initServer();
+	ServerGame() {};
+	bool initServer(OIS::Keyboard* keyboard);
 	void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score1, int& score2, bool& soundOn);
 	virtual void messageClientPlayer();
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt, float& time);
@@ -71,8 +73,10 @@ class ClientGame : public Game{
 	Paddle* serverPaddle;
 
 public:
-	ClientGame();
-	void initClient();
+	ClientGame() {};
+	~ClientGame();
+	bool initClient();
+	bool connectToHost(std::string);
 	void createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamera, float& time, int& score1, int& score2, bool& soundOn);
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt, float& time);
 	virtual bool keyPressed(const OIS::KeyEvent& arg);

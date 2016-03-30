@@ -95,7 +95,7 @@ void GameManager::createMenu(){
     CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
-    menu = wmgr.createWindow("DefaultWindow", "CEGUIDemo/Sheet");
+    menu = wmgr.createWindow("DefaultWindow", "CEGUIDemo");
     CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(menu);
 
     CEGUI::Window *startSinglePlayer = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
@@ -121,7 +121,12 @@ void GameManager::createMenu(){
     
     menu->addChild(startClient);
     startClient->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameManager::renderGameClient, this));   
+
+
 }
+
+
+
 
 void GameManager::createScoreboard()
 {
@@ -215,6 +220,9 @@ void GameManager::setUpLighting()
 
 bool GameManager::keyPressed( const OIS::KeyEvent &arg )
 {
+    CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
+    context.injectKeyDown((CEGUI::Key::Scan)arg.key);
+    context.injectChar((CEGUI::Key::Scan)arg.text);
 
     if(arg.key == OIS::KC_M){
         soundOn = !soundOn;
@@ -235,6 +243,7 @@ bool GameManager::keyPressed( const OIS::KeyEvent &arg )
 
 bool GameManager::keyReleased( const OIS::KeyEvent &arg )
 {   
+    CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp((CEGUI::Key::Scan)arg.key);
     if(game && time > 0)
         game->keyReleased(arg);
     return true;
@@ -324,6 +333,7 @@ bool GameManager::renderGame(const CEGUI::EventArgs &e)
 bool GameManager::renderGameServer(const CEGUI::EventArgs &e){
     destroyMenu();
     ServerGame* server = new ServerGame();
+    mShutDown = !(server->initServer(mKeyboard));
     server->createScene(mSceneMgr, mCamera, time, score1, score2, soundOn);
     createMultiplayerScoreboard();
     game = server;
@@ -331,12 +341,39 @@ bool GameManager::renderGameServer(const CEGUI::EventArgs &e){
 }
 
 bool GameManager::renderGameClient(const CEGUI::EventArgs &e)
-{
-    destroyMenu();
+{    
+    CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+    CEGUI::WindowManager::getSingleton().destroyWindow(menu);
+    menu = wmgr.createWindow("DefaultWindow", "CEGUIDemo");
+    CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(menu);
+    
+    editbox = wmgr.createWindow("TaharezLook/Editbox", "CEGUIDemo/Editbox");
+    editbox->setMinSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    editbox->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    editbox->setPosition(CEGUI::UVector2( CEGUI::UDim(0.425f, 0), CEGUI::UDim(0.475f, 0)));
+    editbox->subscribeEvent(CEGUI::Editbox::EventTextAccepted, CEGUI::Event::Subscriber(&GameManager::enteredHostName, this));
+    menu->addChild(editbox);
+
+    editboxDialogue = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    editboxDialogue->setText("Enter Host Name: ");
+    editboxDialogue->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    editboxDialogue->setPosition(CEGUI::UVector2( CEGUI::UDim(0.425f, 0), CEGUI::UDim(0.375f, 0)));
+    
+    menu->addChild(editboxDialogue);
+}
+
+bool GameManager::enteredHostName(const CEGUI::EventArgs &e){
+    std::string hostname(editbox->getText().c_str());
     ClientGame* client = new ClientGame();
-    client->createScene(mSceneMgr, mCamera, time, score1, score2, soundOn);
-    createMultiplayerScoreboard();
-    game = client;
+    client->initClient();
+    if(client->connectToHost(hostname)){
+        destroyMenu();
+        client->createScene(mSceneMgr, mCamera, time, score1, score2, soundOn);
+        createMultiplayerScoreboard();
+        game = client;
+    }else{
+        editboxDialogue->setText("Invalid Host Try Again");
+    }
     return true;
 }
 
