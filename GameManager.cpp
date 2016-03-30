@@ -308,8 +308,6 @@ bool GameManager::mouseMoved(const OIS::MouseEvent &arg)
         // Scroll wheel.
         if (arg.state.Z.rel)
             sys.getDefaultGUIContext().injectMouseWheelChange(arg.state.Z.rel / 120.0f);
-    }else{
-        mCameraMan->injectMouseMove(arg);
     }
     return true;
 }

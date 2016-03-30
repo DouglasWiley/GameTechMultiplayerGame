@@ -102,7 +102,9 @@ void ServerGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamer
     paddle2 = new Paddle(mSceneMgr, physicsEngine, 0, 750, 375);
     ball = new Ball(mSceneMgr, physicsEngine);
     ball->getBody()->setLinearVelocity(btVector3(200, 0, -200));
-    paddle->getNode()->createChildSceneNode(Ogre::Vector3(0, 0,0))->attachObject(mCamera);
+    //mSceneMgr->createChildSceneNode(Ogre::Vector3(0, 0,0))->attachObject(mCamera);
+    mCamera->setPosition(Ogre::Vector3(0, 2000, -2000));
+    mCamera->lookAt(Ogre::Vector3(0,650,0));
    	p1Callback = new MyContactResultCallback(&score1, &time, &soundOn);
    	p2Callback = new MyContactResultCallback(&score2, &time, &soundOn);
     paddleCallback = new MyCollisionCallback(&time, (char*) "music/ballHittingPaddle.wav", &soundOn);
@@ -177,7 +179,10 @@ void ClientGame::createScene(Ogre::SceneManager* mSceneMgr, Ogre::Camera* mCamer
     paddle = new Paddle(mSceneMgr, 0, 750, 375);
     serverPaddle = new Paddle(mSceneMgr, 0, 750, -375);
     ball = new Ball(mSceneMgr);
-    paddle->getNode()->createChildSceneNode(Ogre::Vector3(0, 0,0))->attachObject(mCamera);
+    //paddle->getNode()->createChildSceneNode(Ogre::Vector3(0, 0, 3000))->attachObject(mCamera);
+    mCamera->setPosition(Ogre::Vector3(0, 2000, 2000));
+    mCamera->lookAt(Ogre::Vector3(0,650,0));
+
     score1ptr = &score1;
     score2ptr = &score2;
 }
@@ -217,12 +222,27 @@ bool ClientGame::frameRenderingQueued(const Ogre::FrameEvent& evt, float& time){
 
 bool ClientGame::keyPressed(const OIS::KeyEvent& arg){
     	std::stringstream message;
-    	message << "move " << arg.key;
+    	if(arg.key == OIS::KC_A){
+        	message << "move " << OIS::KC_D;
+    	}
+    	else if(arg.key == OIS::KC_D){
+        	message << "move " << OIS::KC_A;
+    	}
+    	else
+    		message << "move " << arg.key;
+
       	netMgr->messageServer(PROTOCOL_TCP, message.str().c_str(), message.str().size());
 }
 
 bool ClientGame::keyReleased(const OIS::KeyEvent& arg){
 		std::stringstream message;
-		message << "stop " << arg.key;
+		if(arg.key == OIS::KC_A){
+        	message << "stop " << OIS::KC_D;
+    	}
+    	else if(arg.key == OIS::KC_D){
+        	message << "stop " << OIS::KC_A;
+    	}
+    	else
+    		message << "stop " << arg.key;
       	netMgr->messageServer(PROTOCOL_TCP, message.str().c_str(), message.str().size());
 }
