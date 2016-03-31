@@ -30,8 +30,8 @@
     ESC to quit
 
   Screenshots:
-  [Main Menu](http://i.imgur.com/hzTp5V3.png)
+  ![Main Menu](http://i.imgur.com/hzTp5V3.png)
   
-  [MP Game](http://i.imgur.com/Fe79TGt.jpg)
+  ![MP Game](http://i.imgur.com/Fe79TGt.jpg)
   
-  [End Screen](http://i.imgur.com/Gixmh1v.png)
+  ![End Screen](http://i.imgur.com/Gixmh1v.png)
