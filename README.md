@@ -28,3 +28,10 @@
     S to move your paddle right
     D to move your paddle down
     ESC to quit
+
+  Screenshots:
+  [Main Menu](http://i.imgur.com/hzTp5V3.png)
+  
+  [MP Game](http://i.imgur.com/Fe79TGt.jpg)
+  
+  [End Screen](http://i.imgur.com/Gixmh1v.png)
