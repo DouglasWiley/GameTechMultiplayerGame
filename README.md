@@ -1,5 +1,5 @@
 # GameTechMultiplayerGame
-  Multiplayer version of 3D Pong playable over LAN.
+  Multiplayer version of 3D Pong playable over LAN created by  myself, Alissa Hall, and Anurag Papineni.
 
   Implemented using the following open source libraries:
 
